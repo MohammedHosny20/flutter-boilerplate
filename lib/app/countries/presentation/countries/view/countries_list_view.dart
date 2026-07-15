@@ -39,7 +39,7 @@ class _CountriesListViewState extends ConsumerState<CountriesListView> {
                         icon: const Icon(Icons.clear),
                         onPressed: () {
                           _searchController.clear();
-                          ref.read(countriesNotifierProvider.notifier).searchCountries('');
+                          ref.read(countriesNotifierProvider.notifier).clearSearch();
                         },
                       )
                     : null,

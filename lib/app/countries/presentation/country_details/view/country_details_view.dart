@@ -15,7 +15,7 @@ class CountryDetailsView extends ConsumerWidget {
         loading: () => const CustomLoading(),
         error: (error, _) => CountriesErrorWidget(
           message: error.toString(),
-          onRetry: () => ref.invalidate(countryDetailsProvider(code)),
+          onRetry: () => ref.read(countryDetailsProvider(code).notifier).retry(),
         ),
         data: (country) => CountryDetailsCard(country: country),
       ),

@@ -27,7 +27,7 @@ class CountriesNotifier extends Notifier<AsyncValue<List<CountryUiModel>>> {
 
   Future<void> searchCountries(String query) async {
     if (query.isEmpty) {
-      return loadCountries();
+      return clearSearch();
     }
     state = const AsyncValue.loading();
     try {
@@ -44,6 +44,10 @@ class CountriesNotifier extends Notifier<AsyncValue<List<CountryUiModel>>> {
     } catch (e, s) {
       state = AsyncValue.error(e, s);
     }
+  }
+
+  Future<void> clearSearch() async {
+    await loadCountries();
   }
 }
 
