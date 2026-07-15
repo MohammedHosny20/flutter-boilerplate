@@ -212,8 +212,7 @@ class _CounterWidgetState extends State<CounterWidget> {
 
     if (parsedValue == null) {
       // Not a full number yet. Could be "123." or invalid.
-      if (westernText.endsWith('.') &&
-          westernText.indexOf('.') == westernText.lastIndexOf('.')) {
+      if (westernText.endsWith('.') && westernText.indexOf('.') == westernText.lastIndexOf('.')) {
         // It's like "123." or just "."
         final beforeDot = westernText.substring(0, westernText.length - 1);
         // Check if the part before the dot is a valid number and within bounds (optional for intermediate state)
@@ -266,8 +265,7 @@ class _CounterWidgetState extends State<CounterWidget> {
       return;
     }
     // Handle if text ends with "." like "123." -> "123"
-    if (currentText.endsWith('.') &&
-        currentText.indexOf('.') == currentText.lastIndexOf('.')) {
+    if (currentText.endsWith('.') && currentText.indexOf('.') == currentText.lastIndexOf('.')) {
       currentText = currentText.substring(0, currentText.length - 1);
       if (currentText.isEmpty || currentText == "-") {
         // e.g. if original was just "." or "-."
@@ -346,9 +344,7 @@ class _CounterWidgetState extends State<CounterWidget> {
         fontWeight: FontWeight.w500,
         fontFamily: fontFamily(context: context),
         color: widget.enabled
-            ? (widget.isPlainStyle
-                  ? context.colors.onSurface
-                  : context.colors.onPrimaryContainer)
+            ? (widget.isPlainStyle ? context.colors.onSurface : context.colors.onPrimaryContainer)
             : Colors.grey,
       ),
       inputFormatters: inputFormatters,
@@ -366,9 +362,7 @@ class _CounterWidgetState extends State<CounterWidget> {
           fontSize: 16.sp,
           fontWeight: FontWeight.w500,
           color: widget.enabled
-              ? (widget.isPlainStyle
-                    ? context.colors.onSurface
-                    : context.colors.onPrimaryContainer)
+              ? (widget.isPlainStyle ? context.colors.onSurface : context.colors.onPrimaryContainer)
               : Colors.grey,
           fontFamily: fontFamily(context: context),
         ),
@@ -397,10 +391,7 @@ class _CounterWidgetState extends State<CounterWidget> {
             error = widget.validator!(currentValue);
           });
           widget.onValidationChange?.call(error == null);
-        } else if (currentValue == null &&
-            text.isNotEmpty &&
-            text != "-" &&
-            text != ".") {
+        } else if (currentValue == null && text.isNotEmpty && text != "-" && text != ".") {
           // If text is invalid but not just an initial "-", ".", trigger validation error
           if (widget.validator != null) {
             // Cannot pass null to validator, so handle this state
@@ -429,12 +420,8 @@ class _CounterWidgetState extends State<CounterWidget> {
             ),
           Container(
             decoration: BoxDecoration(
-              borderRadius: widget.isPlainStyle
-                  ? null
-                  : BorderRadius.circular(36.r),
-              color: widget.isPlainStyle
-                  ? null
-                  : context.colors.primary.withValues(alpha: .4),
+              borderRadius: widget.isPlainStyle ? null : BorderRadius.circular(36.r),
+              color: widget.isPlainStyle ? null : context.colors.primary.withValues(alpha: .4),
               // border:
               //     widget.border ?? Border.all(color: Colors.grey, width: 1.0.r),
             ),
@@ -487,9 +474,7 @@ class _CounterWidgetState extends State<CounterWidget> {
                   )
                 : Row(
                     // Not including text field
-                    mainAxisSize: widget.isMaxWidth
-                        ? MainAxisSize.max
-                        : MainAxisSize.min,
+                    mainAxisSize: widget.isMaxWidth ? MainAxisSize.max : MainAxisSize.min,
                     mainAxisAlignment: widget.isMaxWidth
                         ? MainAxisAlignment.spaceEvenly
                         : MainAxisAlignment.start,
@@ -583,8 +568,7 @@ class _CounterWidgetState extends State<CounterWidget> {
       _count = widget.initialValue.clamp(widget.minValue, widget.maxValue);
       needsUpdate = true;
     }
-    if (oldWidget.minValue != widget.minValue ||
-        oldWidget.maxValue != widget.maxValue) {
+    if (oldWidget.minValue != widget.minValue || oldWidget.maxValue != widget.maxValue) {
       _count = _count.clamp(widget.minValue, widget.maxValue);
       needsUpdate = true;
     }
@@ -617,8 +601,7 @@ String toLocalizedEnglishNumber(double value, int decimalPlaces) {
   // Determine current locale or use a fixed one for testing
   // For simplicity, this example doesn't rely on device locale but you can adapt it.
   // final String locale = Localizations.localeOf(context).languageCode == 'ar' ? 'ar_EG' : 'en_US';
-  const String locale =
-      'en'; // Or 'ar_EG' for Arabic default. Could be a widget param.
+  const String locale = 'en'; // Or 'ar_EG' for Arabic default. Could be a widget param.
 
   // Use toStringAsFixed to control decimal places *before* formatting
   // to prevent too many or too few based on NumberFormat's own rounding.

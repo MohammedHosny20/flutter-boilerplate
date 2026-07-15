@@ -1,8 +1,10 @@
 part of '../imports/onboarding_imports.dart';
 
-class OnBoardingView extends GetView<OnBoardingController> {
+class OnBoardingView extends ConsumerWidget {
+  const OnBoardingView({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return PlatformScaffold(
       backgroundColor: context.colors.surface,
       body: SafeArea(

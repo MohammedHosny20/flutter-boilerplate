@@ -1,10 +1,11 @@
 part of '../../imports/login_view_imports.dart';
 
-class BuildMobileLoginTextField extends GetView<OtpLoginController> {
+class BuildMobileLoginTextField extends ConsumerWidget {
   const BuildMobileLoginTextField();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(otpLoginControllerProvider.notifier);
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 5.h,
@@ -50,7 +51,7 @@ class BuildMobileLoginTextField extends GetView<OtpLoginController> {
               prefixIcon: Icons.phone,
               shouldAutoValidate: true,
               onValidationChanged: (isValid) {
-                controller.isPhoneNumberValid.value = isValid;
+                controller.setPhoneNumberValid(isValid);
               },
             ),
           ),

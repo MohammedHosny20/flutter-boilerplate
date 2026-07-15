@@ -58,9 +58,7 @@ class ApiProfile {
     email: asString(json, 'email'),
     firstName: asStringOrNull(json, 'firstName'),
     lastName: asStringOrNull(json, 'lastName'),
-    image: json['image'] == null
-        ? null
-        : MediaItem.fromJson(asMap(json, 'image')),
+    image: json['image'] == null ? null : MediaItem.fromJson(asMap(json, 'image')),
     provider: asStringOrNull(json, 'provider'),
     confirmed: asBoolOrNull(json, 'confirmed'),
     blocked: asBoolOrNull(json, 'blocked'),

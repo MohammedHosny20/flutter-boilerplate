@@ -16,7 +16,7 @@ class OnBoardingPage extends StatelessWidget {
                 padding: EdgeInsets.only(right: 8.r, left: 8.r, top: 8.h),
                 height: context.height * .48,
                 child: Lottie.asset(
-                  onboarding.lottieAsset ?? '',
+                  onboarding.lottieAsset,
                   errorBuilder: (ctx, e, _) => const SizedBox.shrink(),
                 ),
               ),

@@ -14,13 +14,11 @@ class AuthRepository {
 
   final MyPreferenceManger preferenceManger;
 
-  AuthRepository({
+  const AuthRepository({
     required this.remoteAuthDataSource,
     required this.auth0DataSource,
     required this.preferenceManger,
   });
-
-  static AuthRepository get instance => getIt.get<AuthRepository>();
 
   Future<NetworkResult<User>> loginViaAuth0({
     LoginMethod method = LoginMethod.auth0Web,
@@ -128,9 +126,7 @@ class AuthRepository {
 
     await preferenceManger.saveToken(token);
     await preferenceManger.saveUser(info);
-    final role = user.role?.type != null
-        ? UserRoleType.fromString(user.role!.type)
-        : null;
+    final role = user.role?.type != null ? UserRoleType.fromString(user.role!.type) : null;
     await preferenceManger.saveUserRoleType(role);
     if (loginMethod != null) {
       await preferenceManger.saveLoginMethod(loginMethod);
@@ -194,8 +190,7 @@ class AuthRepository {
   }
 
   Future<NetworkResult<User>> verifyOtpCode({required String pin}) async {
-    final NetworkResult<ApiUser> result = await remoteAuthDataSource
-        .verifyOtpCode(pin: pin);
+    final NetworkResult<ApiUser> result = await remoteAuthDataSource.verifyOtpCode(pin: pin);
     return _handleSavingUser(result: result, loginMethod: LoginMethod.email);
   }
 

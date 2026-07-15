@@ -1,10 +1,11 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterEmailFieldWidget extends GetView<RegisterController> {
+class BuildRegisterEmailFieldWidget extends ConsumerWidget {
   const BuildRegisterEmailFieldWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(registerControllerProvider.notifier);
     return BuildRegisterFieldWidget(
       label: AppTrans.emailOrUsernameLabel,
       textField: Padding(
@@ -28,7 +29,7 @@ class BuildRegisterEmailFieldWidget extends GetView<RegisterController> {
           ),
           shouldAutoValidate: true,
           onValidationChanged: (isValid) {
-            controller.isEmailValid.value = isValid;
+            controller.setEmailValid(isValid);
           },
           textInputAction: TextInputAction.next,
           focus: controller.emailFocus,

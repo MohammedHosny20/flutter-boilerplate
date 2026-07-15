@@ -1,9 +1,10 @@
 part of '../../imports/login_imports.dart';
 
-class BuildChooseLoginMethodWidget extends GetView<LoginController> {
+class BuildChooseLoginMethodWidget extends ConsumerWidget {
   const BuildChooseLoginMethodWidget();
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(loginControllerProvider.notifier);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [

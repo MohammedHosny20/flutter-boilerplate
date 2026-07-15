@@ -1,11 +1,9 @@
 part of '../../../imports/app_imports.dart';
 
-class CustomDrawer extends StatelessWidget {
+class CustomDrawer extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
   final Widget child;
   final bool disabledGestures;
-
-  AppController get controller => AppController.instance;
 
   const CustomDrawer({
     super.key,
@@ -15,16 +13,12 @@ class CustomDrawer extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(appControllerProvider.notifier);
     // Define dimensions for the Rail
     final double railCollapsedWidth =
-        48.r +
-        (context.isLtr
-            ? context.mediaQueryPadding.left
-            : context.mediaQueryPadding.right);
-    final double railExpandedWidth = context.isMobile
-        ? context.width * .3
-        : context.width * .25;
+        48.r + (context.isLtr ? context.mediaQueryPadding.left : context.mediaQueryPadding.right);
+    final double railExpandedWidth = context.isMobile ? context.width * .3 : context.width * .25;
 
     return AdvancedCustomDrawer(
       // Trigger rail mode when screen is wide enough (Tablet/Web/Landscape)
@@ -72,7 +66,7 @@ class CustomDrawer extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(16.r)),
       ),
       drawer: ValueListenableBuilder(
-        valueListenable: AppController.instance.drawerController,
+        valueListenable: controller.drawerController,
         builder: (context, value, child) {
           return CustomDrawerBody(
             navigationShell: navigationShell,

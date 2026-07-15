@@ -1,6 +1,6 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterMethodButton extends GetView<RegisterController> {
+class BuildRegisterMethodButton extends ConsumerWidget {
   final LoginMethod method;
 
   const BuildRegisterMethodButton({
@@ -9,7 +9,7 @@ class BuildRegisterMethodButton extends GetView<RegisterController> {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: 8.r,
@@ -17,7 +17,7 @@ class BuildRegisterMethodButton extends GetView<RegisterController> {
       ),
       child: CustomElevatedButton(
         onPressed: () {
-          controller.registerBy(method: method);
+          ref.read(registerControllerProvider.notifier).registerBy(method: method);
         },
         margin: EdgeInsets.zero,
         color: context.colors.primary,

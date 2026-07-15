@@ -30,8 +30,7 @@ class SecureStorageManager {
   // Keys to access our generated secrets within the device's secure storage.
   static const _encryptionKeyStorageKey = '_device_config_encryption_key_';
   static const _webKeyPasswordStorageKey = '_device_config_web_key_password_';
-  static const _webEncryptionSaltStorageKey =
-      '_device_config_web_encryption_salt_';
+  static const _webEncryptionSaltStorageKey = '_device_config_web_encryption_salt_';
 
   // The AES encryption key, loaded or generated at runtime.
   static String? encryptionKey;
@@ -60,13 +59,20 @@ class SecureStorageManager {
   const SecureStorageManager._(this._activeStorageType);
 
   /// Provides access to the singleton instance. Must call `init()` before use.
-  static SecureStorageManager get instance => getIt.get<SecureStorageManager>();
+  static SecureStorageManager? _instance;
+  static SecureStorageManager get instance {
+    final i = _instance;
+    if (i == null) {
+      throw StateError('SecureStorageManager not initialised. Call init() first.');
+    }
+    return i;
+  }
 
   /// Initializes the secure storage, including on-device key generation/loading.
   /// This must be called once at app startup.
   static Future<void> init({StorageType type = StorageType.auto}) async {
     try {
-      if (getIt.isRegistered<SecureStorageManager>()) {
+      if (_instance != null) {
         myLogger.w('SecureStorageHelper already initialized.');
         return;
       }
@@ -115,10 +121,8 @@ class SecureStorageManager {
         }
       }
 
-      // Step 5: Register the singleton instance.
-      getIt.registerSingleton<SecureStorageManager>(
-        SecureStorageManager._(activeType),
-      );
+      // Step 5: Set the singleton instance.
+      _instance = SecureStorageManager._(activeType);
       await instance._ensureFreshInstallHandled();
     } catch (e) {
       myLogger.e(
@@ -140,9 +144,7 @@ class SecureStorageManager {
         _webEncryptionSaltStorageKey,
       );
 
-      if (encryptionKey == null ||
-          webKeyPassword == null ||
-          webEncryptionSalt == null) {
+      if (encryptionKey == null || webKeyPassword == null || webEncryptionSalt == null) {
         myLogger.e('Secrets not found. Generating and saving new secrets...');
         await _generateAndSaveNewKeys();
       } else {
@@ -157,9 +159,7 @@ class SecureStorageManager {
       _isUsingFallbackKeys = true;
     }
 
-    if (encryptionKey == null ||
-        webKeyPassword == null ||
-        webEncryptionSalt == null) {
+    if (encryptionKey == null || webKeyPassword == null || webEncryptionSalt == null) {
       throw Exception('Failed to initialize secure config. Keys are null.');
     }
   }
@@ -188,8 +188,7 @@ class SecureStorageManager {
   /// Generates a cryptographically secure random string.
   static String _generateRandomString(int length) {
     final random = Random.secure();
-    const chars =
-        'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+    const chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
     return List.generate(
       length,
       (index) => chars[random.nextInt(chars.length)],
@@ -303,13 +302,10 @@ class SecureStorageManager {
 
   // --- Private Implementation Methods ---
 
-  Future<void> _setWithSimple(String key, String value) =>
-      SimpleSecureStorage.write(key, value);
+  Future<void> _setWithSimple(String key, String value) => SimpleSecureStorage.write(key, value);
 
   Future<String?> _getWithSimple(String key) async {
-    return await SimpleSecureStorage.has(key)
-        ? SimpleSecureStorage.read(key)
-        : null;
+    return await SimpleSecureStorage.has(key) ? SimpleSecureStorage.read(key) : null;
   }
 
   Future<void> _removeWithSimple(String key) => SimpleSecureStorage.delete(key);

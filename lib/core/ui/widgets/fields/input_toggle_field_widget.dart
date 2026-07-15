@@ -68,7 +68,7 @@ class InputFieldToggleWidget extends StatelessWidget {
             PlatformSwitch(
               value: value,
               onChanged: onChanged,
-              activeColor: context.colors.primary,
+              activeTrackColor: context.colors.primary,
             ),
           ],
         ),

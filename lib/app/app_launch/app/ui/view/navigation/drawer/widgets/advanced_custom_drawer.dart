@@ -44,8 +44,7 @@ class AdvancedCustomDrawer extends StatefulWidget {
   State<AdvancedCustomDrawer> createState() => _AdvancedDrawerState();
 }
 
-class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
-    with TickerProviderStateMixin {
+class _AdvancedDrawerState extends State<AdvancedCustomDrawer> with TickerProviderStateMixin {
   final _spareController = AdvancedDrawerController();
   late AnimationController _spareAnimationController;
   late AnimationController _animationController;
@@ -86,11 +85,9 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
               children: [
                 ValueListenableBuilder<AdvancedDrawerValue>(
                   valueListenable: _controller,
-                  builder: (_, value, __) {
+                  builder: (_, value, _) {
                     // Calculate target width
-                    final targetWidth = value.visible
-                        ? widget.railMaxWidth
-                        : widget.railMinWidth;
+                    final targetWidth = value.visible ? widget.railMaxWidth : widget.railMinWidth;
 
                     return AnimatedContainer(
                       duration: widget.animationDuration,
@@ -105,9 +102,7 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
                 // if (!widget.rtlOpening)
                 Expanded(
                   child: Container(
-                    clipBehavior: widget.childDecoration != null
-                        ? Clip.antiAlias
-                        : Clip.none,
+                    clipBehavior: widget.childDecoration != null ? Clip.antiAlias : Clip.none,
                     decoration: widget.childDecoration,
                     child: widget.child,
                   ),
@@ -124,41 +119,29 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
     return Material(
       color: widget.backdropColor,
       child: GestureDetector(
-        onHorizontalDragStart: widget.disabledGestures
-            ? null
-            : _handleDragStart,
-        onHorizontalDragUpdate: widget.disabledGestures
-            ? null
-            : _handleDragUpdate,
+        onHorizontalDragStart: widget.disabledGestures ? null : _handleDragStart,
+        onHorizontalDragUpdate: widget.disabledGestures ? null : _handleDragUpdate,
         onHorizontalDragEnd: widget.disabledGestures ? null : _handleDragEnd,
-        onHorizontalDragCancel: widget.disabledGestures
-            ? null
-            : _handleDragCancel,
+        onHorizontalDragCancel: widget.disabledGestures ? null : _handleDragCancel,
         child: ColoredBox(
           color: Colors.transparent,
           child: Stack(
             children: [
               if (widget.backdrop != null) widget.backdrop!,
               Align(
-                alignment: widget.rtlOpening
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
+                alignment: widget.rtlOpening ? Alignment.centerRight : Alignment.centerLeft,
                 child: FractionallySizedBox(
                   widthFactor: widget.openRatio,
                   child: ScaleTransition(
                     scale: _drawerScaleAnimation,
-                    alignment: widget.rtlOpening
-                        ? Alignment.centerLeft
-                        : Alignment.centerRight,
+                    alignment: widget.rtlOpening ? Alignment.centerLeft : Alignment.centerRight,
                     child: RepaintBoundary(child: widget.drawer),
                   ),
                 ),
               ),
               SlideTransition(
                 position: _childSlideAnimation,
-                textDirection: widget.rtlOpening
-                    ? TextDirection.rtl
-                    : TextDirection.ltr,
+                textDirection: widget.rtlOpening ? TextDirection.rtl : TextDirection.ltr,
                 child: ScaleTransition(
                   scale: _childScaleAnimation,
                   child: Builder(
@@ -168,7 +151,7 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
                           RepaintBoundary(child: widget.child),
                           ValueListenableBuilder<AdvancedDrawerValue>(
                             valueListenable: _controller,
-                            builder: (_, value, __) {
+                            builder: (_, value, _) {
                               if (!value.visible) {
                                 return const SizedBox();
                               }
@@ -185,8 +168,7 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
                         ],
                       );
 
-                      if (widget.animateChildDecoration &&
-                          widget.childDecoration != null) {
+                      if (widget.animateChildDecoration && widget.childDecoration != null) {
                         return AnimatedBuilder(
                           animation: _childDecorationAnimation,
                           builder: (_, child) {
@@ -201,9 +183,7 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
                       }
 
                       return Container(
-                        clipBehavior: widget.childDecoration != null
-                            ? Clip.antiAlias
-                            : Clip.none,
+                        clipBehavior: widget.childDecoration != null ? Clip.antiAlias : Clip.none,
                         decoration: widget.childDecoration,
                         child: childStack,
                       );
@@ -233,11 +213,9 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
       value: _controller.value.visible ? 1 : 0,
     );
 
-    _animationController =
-        widget.animationController ?? _spareAnimationController;
+    _animationController = widget.animationController ?? _spareAnimationController;
 
-    _animationController.reverseDuration = _animationController.duration =
-        widget.animationDuration;
+    _animationController.reverseDuration = _animationController.duration = widget.animationDuration;
 
     final parentAnimation = widget.animationCurve == null
         ? _animationController
@@ -269,9 +247,7 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
 
   void _handleControllerChanged() {
     if (mounted && context.mounted) {
-      _controller.value.visible
-          ? _animationController.forward()
-          : _animationController.reverse();
+      _controller.value.visible ? _animationController.forward() : _animationController.reverse();
     }
   }
 
@@ -288,8 +264,7 @@ class _AdvancedDrawerState extends State<AdvancedCustomDrawer>
     final diff = (_freshPosition - _startPosition!).dx;
     _animationController.value =
         _offsetValue +
-        (diff / (screenSize.width * widget.openRatio)) *
-            (widget.rtlOpening ? -1 : 1);
+        (diff / (screenSize.width * widget.openRatio)) * (widget.rtlOpening ? -1 : 1);
   }
 
   void _handleDragEnd(DragEndDetails details) {

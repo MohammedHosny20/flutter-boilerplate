@@ -1,47 +1,77 @@
 part of '../imports/verify_phone_view_imports.dart';
 
 ///Login controller to setup data to the ui.
-class VerifyPhoneController extends GetxController {
-  final AuthRepository authRepository;
+class VerifyPhoneState {
+  final bool isLoading;
+  final bool isOtpValid;
+  final String currentPin;
+  final bool showScrollPadding;
 
-  VerifyPhoneController({
-    required this.authRepository,
+  VerifyPhoneState({
+    this.isLoading = false,
+    this.isOtpValid = false,
+    this.currentPin = '',
+    this.showScrollPadding = true,
   });
 
-  final isLoading = false.obs;
+  VerifyPhoneState copyWith({
+    bool? isLoading,
+    bool? isOtpValid,
+    String? currentPin,
+    bool? showScrollPadding,
+  }) {
+    return VerifyPhoneState(
+      isLoading: isLoading ?? this.isLoading,
+      isOtpValid: isOtpValid ?? this.isOtpValid,
+      currentPin: currentPin ?? this.currentPin,
+      showScrollPadding: showScrollPadding ?? this.showScrollPadding,
+    );
+  }
+}
 
-  final isOtpValid = false.obs;
-  final currentPin = ''.obs;
-
-  final showScrollPadding = true.obs;
+class VerifyPhoneController extends Notifier<VerifyPhoneState> {
+  @override
+  VerifyPhoneState build() {
+    return VerifyPhoneState();
+  }
 
   Future<void> verifyOtp() async {
-    showScrollPadding.value = false;
+    state = state.copyWith(showScrollPadding: false);
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-    if (!isOtpValid.value) return;
-    isLoading.value = true;
+    if (!state.isOtpValid) return;
+    state = state.copyWith(isLoading: true);
 
-    final result = await authRepository.verifyOtpCode(
-      pin: currentPin.value,
+    final authRepo = await ref.read(authRepositoryProvider.future);
+    final result = await authRepo.verifyOtpCode(
+      pin: state.currentPin,
     );
 
     result.when(
       success: (user) async {
-        isLoading.value = false;
+        state = state.copyWith(isLoading: false);
         AppNavigation.navigateFromVerifyOtpToHome();
       },
       error: (NetworkException exception) {
-        isLoading.value = false;
+        state = state.copyWith(isLoading: false);
         Alert.error(message: exception.message);
       },
     );
   }
 
   void handleOtpPinChanged(String value) {
-    showScrollPadding.value = true;
+    state = state.copyWith(
+      showScrollPadding: true,
+      currentPin: value,
+      isOtpValid: isOtpCodeValidNumber(value),
+    );
+  }
 
-    currentPin.value = value;
-    isOtpValid.value = isOtpCodeValidNumber(value);
+  void setOtpValid(bool value) {
+    state = state.copyWith(isOtpValid: value);
+  }
+
+  void setShowScrollPadding(bool value) {
+    state = state.copyWith(showScrollPadding: value);
   }
 
   bool isOtpCodeValidNumber(String value) {
@@ -57,3 +87,7 @@ class VerifyPhoneController extends GetxController {
 
   void resendCode() {}
 }
+
+final verifyPhoneControllerProvider = NotifierProvider<VerifyPhoneController, VerifyPhoneState>(
+  VerifyPhoneController.new,
+);

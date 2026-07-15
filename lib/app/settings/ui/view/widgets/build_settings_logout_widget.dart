@@ -1,10 +1,11 @@
 part of '../../imports/settings_imports.dart';
 
-class BuildSettingsLogOutWidget extends GetView<SettingsController> {
+class BuildSettingsLogOutWidget extends ConsumerWidget {
   const BuildSettingsLogOutWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(settingsControllerProvider.notifier);
     return BuildSettingsTile(
       title: AppTrans.logout,
       icon: Icons.logout,

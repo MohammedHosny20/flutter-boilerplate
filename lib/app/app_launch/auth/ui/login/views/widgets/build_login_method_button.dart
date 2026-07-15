@@ -1,6 +1,6 @@
 part of '../../imports/login_imports.dart';
 
-class BuildLoginMethodButton extends GetView<LoginController> {
+class BuildLoginMethodButton extends ConsumerWidget {
   final LoginMethod method;
   const BuildLoginMethodButton({
     required this.method,
@@ -8,7 +8,7 @@ class BuildLoginMethodButton extends GetView<LoginController> {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: 8.r,
@@ -16,7 +16,7 @@ class BuildLoginMethodButton extends GetView<LoginController> {
       ),
       child: CustomElevatedButton(
         onPressed: () {
-          controller.loginBy(method: method);
+          ref.read(loginControllerProvider.notifier).loginBy(method: method);
         },
         margin: EdgeInsets.zero,
         color: context.colors.primary,

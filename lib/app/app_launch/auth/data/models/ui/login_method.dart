@@ -3,12 +3,14 @@ part of '../models.dart';
 enum LoginMethod {
   auth0Web,
   email,
+  phone,
   google,
   apple;
 
   String get auth0Connection => switch (this) {
     auth0Web => '',
     email => 'Username-Password-Authentication',
+    phone => 'sms',
     google => 'google-oauth2',
     apple => 'apple',
   };
@@ -16,6 +18,7 @@ enum LoginMethod {
   IconInfo? get icon => switch (this) {
     auth0Web => IconInfo.icon(Icons.login),
     email => null,
+    phone => IconInfo.icon(Icons.phone),
     google => IconInfo.svg(Assets.icons.google),
     apple => IconInfo.svg(Assets.icons.apple),
   };
@@ -23,6 +26,7 @@ enum LoginMethod {
   String get loginLabel => switch (this) {
     auth0Web => AppTrans.loginWithAuth0Label,
     email => AppTrans.loginWithEmailLabel,
+    phone => AppTrans.loginWithPhoneLabel,
     google => AppTrans.loginWithGoogleLabel,
     apple => AppTrans.loginWithAppleLabel,
   };
@@ -30,6 +34,7 @@ enum LoginMethod {
   Color? backgroundColor(BuildContext context) => switch (this) {
     auth0Web => context.colors.primary.withValues(alpha: .6),
     email => context.colors.primary.withValues(alpha: .6),
+    phone => context.colors.primary.withValues(alpha: .6),
     google => context.colors.primary.withValues(alpha: .6),
     apple => context.colors.primary.withValues(alpha: .6),
   };
@@ -37,6 +42,7 @@ enum LoginMethod {
   Color? onBackground(BuildContext context) => switch (this) {
     auth0Web => context.colors.onPrimary,
     email => context.colors.onPrimary,
+    phone => context.colors.onPrimary,
     google => context.colors.onPrimary,
     apple => context.colors.onPrimary,
   };
@@ -44,6 +50,7 @@ enum LoginMethod {
   Color? iconColor(BuildContext context) => switch (this) {
     auth0Web => context.colors.primary,
     email => context.colors.primary,
+    phone => context.colors.primary,
     google => null,
     apple => null,
   };
@@ -51,6 +58,7 @@ enum LoginMethod {
   String get value => switch (this) {
     auth0Web => 'auth0Web',
     email => 'email',
+    phone => 'phone',
     google => 'google',
     apple => 'apple',
   };
@@ -58,6 +66,7 @@ enum LoginMethod {
   static LoginMethod? fromValue(String? value) => switch (value) {
     'auth0Web' => auth0Web,
     'email' => email,
+    'phone' => phone,
     'google' => google,
     'apple' => apple,
     _ => null,

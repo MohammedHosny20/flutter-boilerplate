@@ -9,9 +9,7 @@ import 'package:playx/playx.dart';
 class RemoteAuthDataSource {
   final PlayxNetworkClient client;
 
-  RemoteAuthDataSource({
-    required this.client,
-  });
+  const RemoteAuthDataSource({required this.client});
 
   Future<NetworkResult<ApiUser>> login({
     required String email,
@@ -28,8 +26,7 @@ class RemoteAuthDataSource {
     );
     if (res is NetworkError<ApiUser>) {
       final error = res.error;
-      if (error is ApiException &&
-          error.message == 'Invalid identifier or password') {
+      if (error is ApiException && error.message == 'Invalid identifier or password') {
         return const NetworkResult.error(
           ApiException(
             errorMessage: AppTrans.emailOrPasswordIncorrect,

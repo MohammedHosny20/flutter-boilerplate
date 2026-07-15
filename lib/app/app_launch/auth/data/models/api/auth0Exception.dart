@@ -23,8 +23,7 @@ class Auth0exception extends ApiException {
     Map<String, dynamic>? errorDetails,
   }) => switch (errorCode) {
     // When a user closes the browser app and in turn, cancels the authentication
-    'USER_CANCELLED' ||
-    'a0.authentication_canceled' => AppTrans.userCanceledLoginErrorMessage,
+    'USER_CANCELLED' || 'a0.authentication_canceled' => AppTrans.userCanceledLoginErrorMessage,
     // When there is no Browser app installed to handle the web authentication
     'a0.browser_not_available' => AppTrans.browserNotAvailableErrorMessage,
     // When the required algorithms to support PKCE web authentication is    not available on the device
@@ -36,8 +35,8 @@ class Auth0exception extends ApiException {
     // When MFA code is required to authenticate
     'mfa_required' || 'a0.mfa_required' => AppTrans.mfaRequiredErrorMessage,
     // When MFA is required and the user is not enrolled
-    'a0.mfa_registration_required' || 'unsupported_challenge_type' =>
-      AppTrans.mfaRegistrationRequiredErrorMessage,
+    'a0.mfa_registration_required' ||
+    'unsupported_challenge_type' => AppTrans.mfaRegistrationRequiredErrorMessage,
     // When Bot Protection flags the request as suspicious
     'requires_verification' => AppTrans.requiresVerificationErrorMessage,
     // When password used was reported to be leaked and a different one is required

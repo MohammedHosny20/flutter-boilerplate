@@ -56,8 +56,7 @@ class PagingTableSource<T> extends AsyncDataTableSource {
 
     // If we don't have enough items yet, request another page
     if (controller.itemList == null ||
-        controller.itemList!.length < endIndex &&
-            controller.nextPageKey != null) {
+        controller.itemList!.length < endIndex && controller.nextPageKey != null) {
       await controller.notifyPageRequestListeners(controller.nextPageKey!);
     }
 
@@ -103,8 +102,7 @@ class CustomPagingTableView<T> extends StatefulWidget {
   });
 
   @override
-  State<CustomPagingTableView<T>> createState() =>
-      _CustomPagingTableViewState<T>();
+  State<CustomPagingTableView<T>> createState() => _CustomPagingTableViewState<T>();
 }
 
 class _CustomPagingTableViewState<T> extends State<CustomPagingTableView<T>> {
@@ -144,11 +142,10 @@ class _CustomPagingTableViewState<T> extends State<CustomPagingTableView<T>> {
       ),
       child: ValueListenableBuilder(
         valueListenable: widget.pagingController,
-        builder: (_, __, ___) {
+        builder: (_, _, _) {
           final state = widget.pagingController.value;
 
-          if (state.itemList?.isEmpty == true &&
-              state.status == PagingStatus.completed) {
+          if (state.itemList?.isEmpty == true && state.status == PagingStatus.completed) {
             return widget.emptyBuilder ?? const SizedBox();
           }
 

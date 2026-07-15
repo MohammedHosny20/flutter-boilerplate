@@ -23,8 +23,7 @@ void updateBrowserUrlQueryParameters(Map<String, String> newParams) {
   if (currentUri == null) {
     // If the current URI is null, retrieve it from GoRouter's state
     final router = AppPages.router;
-    final RouteMatch lastMatch =
-        router.routerDelegate.currentConfiguration.last;
+    final RouteMatch lastMatch = router.routerDelegate.currentConfiguration.last;
     final RouteMatchList matchList = lastMatch is ImperativeRouteMatch
         ? lastMatch.matches
         : router.routerDelegate.currentConfiguration;

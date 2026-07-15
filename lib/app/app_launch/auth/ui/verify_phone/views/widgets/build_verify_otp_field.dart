@@ -1,10 +1,12 @@
 part of '../../imports/verify_phone_view_imports.dart';
 
-class BuildVerifyOtpField extends GetView<VerifyPhoneController> {
+class BuildVerifyOtpField extends ConsumerWidget {
   const BuildVerifyOtpField();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(verifyPhoneControllerProvider);
+    final controller = ref.read(verifyPhoneControllerProvider.notifier);
     final defaultPinTheme = PinTheme(
       width: 56.w,
       height: 56.h,
@@ -31,35 +33,31 @@ class BuildVerifyOtpField extends GetView<VerifyPhoneController> {
     );
 
     return Material(
-      child: Obx(() {
-        return Directionality(
-          textDirection: TextDirection.ltr,
-          child: Pinput(
-            defaultPinTheme: defaultPinTheme,
-            focusedPinTheme: focusedPinTheme,
-            submittedPinTheme: submittedPinTheme,
-            keyboardAppearance: Brightness.dark,
-            keyboardType: TextInputType.phone,
-            closeKeyboardWhenCompleted: false,
-            autofocus: true,
-            validator: (s) {
-              final isValid = controller.isOtpCodeValidNumber(s ?? '');
-              controller.isOtpValid.value = isValid;
-              return isValid
-                  ? null
-                  : AppTrans.verifyPhoneValidOtpError.tr(context: context);
-            },
-            onTap: () {
-              controller.showScrollPadding.value = true;
-            },
-            onChanged: controller.handleOtpPinChanged,
-            onCompleted: (pin) => controller.verifyOtp(),
-            scrollPadding: EdgeInsets.all(
-              controller.showScrollPadding.value ? context.height * .3 : 0,
-            ),
+      child: Directionality(
+        textDirection: TextDirection.ltr,
+        child: Pinput(
+          defaultPinTheme: defaultPinTheme,
+          focusedPinTheme: focusedPinTheme,
+          submittedPinTheme: submittedPinTheme,
+          keyboardAppearance: Brightness.dark,
+          keyboardType: TextInputType.phone,
+          closeKeyboardWhenCompleted: false,
+          autofocus: true,
+          validator: (s) {
+            final isValid = controller.isOtpCodeValidNumber(s ?? '');
+            controller.setOtpValid(isValid);
+            return isValid ? null : AppTrans.verifyPhoneValidOtpError.tr(context: context);
+          },
+          onTap: () {
+            controller.setShowScrollPadding(true);
+          },
+          onChanged: controller.handleOtpPinChanged,
+          onCompleted: (pin) => controller.verifyOtp(),
+          scrollPadding: EdgeInsets.all(
+            state.showScrollPadding ? context.height * .3 : 0,
           ),
-        );
-      }),
+        ),
+      ),
     );
   }
 }

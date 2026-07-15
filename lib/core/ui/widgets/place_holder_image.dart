@@ -7,8 +7,7 @@ class PlaceholderImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding:
-          padding ?? EdgeInsets.symmetric(horizontal: 8.0.r, vertical: 8.0.r),
+      padding: padding ?? EdgeInsets.symmetric(horizontal: 8.0.r, vertical: 8.0.r),
       child: ImageViewer.svgAsset(
         path ?? Assets.images.placeholder,
       ),

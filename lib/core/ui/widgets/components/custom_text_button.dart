@@ -128,9 +128,7 @@ class CustomTextButton extends StatelessWidget {
             height: 20,
             width: 20,
             child: CenterLoading.adaptive(
-              color: isEnabled
-                  ? context.colors.onPrimary
-                  : context.colors.subtitleTextColor,
+              color: isEnabled ? context.colors.onPrimary : context.colors.subtitleTextColor,
               radius: isCupertino(context) ? 10 : 3,
             ),
           ),

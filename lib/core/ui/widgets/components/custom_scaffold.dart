@@ -1,6 +1,6 @@
 part of '../../ui.dart';
 
-class CustomScaffold extends StatelessWidget {
+class CustomScaffold extends ConsumerWidget {
   final Widget child;
   final String? title;
   final Widget? titleWidget;
@@ -49,7 +49,7 @@ class CustomScaffold extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final scaffoldChild = Container(
       padding: padding,
       alignment: Alignment.center,
@@ -103,10 +103,8 @@ class CustomScaffold extends StatelessWidget {
           ),
         ),
         if (includeLoadingOverlay)
-          Obx(
-            () => LoadingOverlay(
-              loadingStatus: AppController.instance.loadingStatus.value,
-            ),
+          LoadingOverlay(
+            loadingStatus: ref.read(appControllerProvider.notifier).loadingStatus.value,
           ),
       ],
     );

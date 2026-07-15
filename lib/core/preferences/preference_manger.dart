@@ -8,14 +8,8 @@ import 'package:playx/playx.dart';
 
 /// This class is responsible for saving key/value pairs in shared preferences.
 class MyPreferenceManger {
-  static final MyPreferenceManger instance =
-      getIt.isRegistered<MyPreferenceManger>()
-      ? getIt.get<MyPreferenceManger>()
-      : MyPreferenceManger();
-
-  void registerInstance() {
-    getIt.registerSingleton<MyPreferenceManger>(MyPreferenceManger());
-  }
+  const MyPreferenceManger._();
+  static const MyPreferenceManger instance = MyPreferenceManger._();
 
   final String _tokenKey = 'token';
   final String _userKey = 'logged_in_user';
@@ -43,8 +37,7 @@ class MyPreferenceManger {
     return SecureStorageManager.instance.remove(key);
   }
 
-  Future<bool> get isLoggedIn async =>
-      (await _getSecureString(_tokenKey) ?? '').isNotEmpty;
+  Future<bool> get isLoggedIn async => (await _getSecureString(_tokenKey) ?? '').isNotEmpty;
 
   Future<bool> get isLoggedOut async => !(await isLoggedIn);
 
@@ -107,10 +100,9 @@ class MyPreferenceManger {
     return _removeSecureString(_tokenKey);
   }
 
-  Future<bool> get isOnBoardingShown async =>
-      PlayxPrefs.getBool(_onBoardingKey);
+  Future<bool> get isOnBoardingShown async => PlayxPrefs.getBool(_onBoardingKey);
 
-  Future<void> saveOnBoardingShown() async {
+  Future<void> saveOnBoardingShown() {
     return PlayxPrefs.setBool(_onBoardingKey, true);
   }
 }

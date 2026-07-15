@@ -1,16 +1,16 @@
 part of '../../imports/login_imports.dart';
 
-class BuildLoginRegisterNowWidget extends GetView<LoginController> {
+class BuildLoginRegisterNowWidget extends ConsumerWidget {
   const BuildLoginRegisterNowWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 10.h,
       ),
       child: InkWell(
-        onTap: controller.navigateToRegister,
+        onTap: ref.read(loginControllerProvider.notifier).navigateToRegister,
         child: RichText(
           text: TextSpan(
             text: AppTrans.dontHaveAccountText.tr(context: context),

@@ -9,8 +9,7 @@ class SliverGroupedGridView<T, E> extends StatefulWidget {
   final Widget Function(E value)? groupSeparatorBuilder;
   final Widget Function(T element)? groupHeaderBuilder;
   final Widget Function(BuildContext context, T element)? itemBuilder;
-  final Widget Function(BuildContext context, T element, int index)?
-  indexedItemBuilder;
+  final Widget Function(BuildContext context, T element, int index)? indexedItemBuilder;
   final GroupedListOrder order;
   final bool sort;
   final Widget separator;
@@ -46,12 +45,10 @@ class SliverGroupedGridView<T, E> extends StatefulWidget {
        assert(groupSeparatorBuilder != null || groupHeaderBuilder != null);
 
   @override
-  State<SliverGroupedGridView<T, E>> createState() =>
-      _SliverGroupedGridViewState<T, E>();
+  State<SliverGroupedGridView<T, E>> createState() => _SliverGroupedGridViewState<T, E>();
 }
 
-class _SliverGroupedGridViewState<T, E>
-    extends State<SliverGroupedGridView<T, E>> {
+class _SliverGroupedGridViewState<T, E> extends State<SliverGroupedGridView<T, E>> {
   final LinkedHashMap<String, GlobalKey> _keys = LinkedHashMap();
   List<T> _sortedElements = [];
 

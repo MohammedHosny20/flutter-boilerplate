@@ -1,10 +1,10 @@
 part of '../imports/settings_imports.dart';
 
-class SettingsView extends GetView<SettingsController> {
+class SettingsView extends ConsumerWidget {
   const SettingsView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return PlayxThemeSwitchingArea(
       child: CustomScaffold(
         title: AppTrans.settings,
@@ -29,13 +29,13 @@ class SettingsView extends GetView<SettingsController> {
   }
 
   static SliverWoltModalSheetPage buildSettingsModalSheetPage(
-    SettingsController controller,
+    Ref ref,
     BuildContext context,
   ) {
     return CustomModal.buildCustomModalPage(
       title: AppTrans.settings,
       body: const SettingsView(),
-      onClosePressed: controller.closeSettingsModalSheet,
+      onClosePressed: () => ref.read(settingsControllerProvider.notifier).closeSettingsModalSheet,
       context: context,
     );
   }

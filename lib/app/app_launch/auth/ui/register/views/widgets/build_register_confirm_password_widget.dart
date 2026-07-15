@@ -1,52 +1,50 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterConfirmPasswordWidget extends GetView<RegisterController> {
+class BuildRegisterConfirmPasswordWidget extends ConsumerWidget {
   const BuildRegisterConfirmPasswordWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(registerControllerProvider);
+    final controller = ref.read(registerControllerProvider.notifier);
     return BuildRegisterFieldWidget(
       label: AppTrans.confirmPasswordLabel,
-      textField: Obx(() {
-        return CustomTextField(
-          hint: AppTrans.confirmPasswordHint,
-          controller: controller.confirmPasswordController,
-          obscureText: controller.hideConfirmPassword.value,
-          type: TextInputType.visiblePassword,
-          suffix: IconButton(
-            icon: Icon(
-              controller.hideConfirmPassword.value
-                  ? Icons.visibility_off
-                  : Icons.visibility,
-            ),
-            onPressed: controller.changeHideConfirmPasswordState,
-            // color: context.colors.secondary,
+      textField: CustomTextField(
+        hint: AppTrans.confirmPasswordHint,
+        controller: controller.confirmPasswordController,
+        obscureText: state.hideConfirmPassword,
+        type: TextInputType.visiblePassword,
+        suffix: IconButton(
+          icon: Icon(
+            state.hideConfirmPassword ? Icons.visibility_off : Icons.visibility,
           ),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 14.r,
-            vertical: 10.r,
+          onPressed: controller.changeHideConfirmPasswordState,
+          // color: context.colors.secondary,
+        ),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 14.r,
+          vertical: 10.r,
+        ),
+        validator: qValidator([
+          IsRequired(
+            AppTrans.passwordRequired.tr(context: context),
           ),
-          validator: qValidator([
-            IsRequired(
-              AppTrans.passwordRequired.tr(context: context),
-            ),
-            AreEqual(
-              other: () => controller.passwordController.value.text,
-              errorMsg: AppTrans.confirmPasswordMatchError.tr(context: context),
-            ),
-          ]),
-          prefix: Icon(
-            Icons.lock,
-            color: context.colors.onSurface,
-            size: 18.r,
+          AreEqual(
+            other: () => controller.passwordController.value.text,
+            errorMsg: AppTrans.confirmPasswordMatchError.tr(context: context),
           ),
-          shouldAutoValidate: true,
-          onValidationChanged: (isValid) {
-            controller.isConfirmPasswordValid.value = isValid;
-          },
-          focus: controller.confirmPasswordFocus,
-        );
-      }),
+        ]),
+        prefix: Icon(
+          Icons.lock,
+          color: context.colors.onSurface,
+          size: 18.r,
+        ),
+        shouldAutoValidate: true,
+        onValidationChanged: (isValid) {
+          controller.setConfirmPasswordValid(isValid);
+        },
+        focus: controller.confirmPasswordFocus,
+      ),
     );
   }
 }

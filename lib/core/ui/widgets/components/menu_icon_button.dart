@@ -1,21 +1,20 @@
 part of '../../ui.dart';
 
-class MenuIconButton extends StatelessWidget {
+class MenuIconButton extends ConsumerWidget {
   const MenuIconButton({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appController = ref.read(appControllerProvider.notifier);
     return IconButton(
       onPressed: () {
-        AppController.instance.toggleDrawer();
+        appController.toggleDrawer();
       },
       icon: ValueListenableBuilder<AdvancedDrawerValue>(
-        valueListenable: AppController.instance.drawerController,
-        builder: (_, value, __) {
+        valueListenable: appController.drawerController,
+        builder: (_, value, _) {
           return AnimatedRotation(
-            turns: value.visible
-                ? (context.isRtl ? 0 : .5)
-                : (context.isRtl ? .5 : 0),
+            turns: value.visible ? (context.isRtl ? 0 : .5) : (context.isRtl ? .5 : 0),
             duration: const Duration(milliseconds: 200),
             child: ImageViewer.svgAsset(
               Assets.icons.expand,

@@ -45,11 +45,8 @@ class FeatureChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final label = isLabelTranslatable
-        ? this.label?.tr(context: context)
-        : this.label;
-    double labelFontSize =
-        fontSize ?? (PlayxLocalization.isCurrentLocaleArabic() ? 14.sp : 15.sp);
+    final label = isLabelTranslatable ? this.label?.tr(context: context) : this.label;
+    double labelFontSize = fontSize ?? (PlayxLocalization.isCurrentLocaleArabic() ? 14.sp : 15.sp);
     final labelLength = label?.length ?? 0;
 
     if (decreaseFontSizeByLength && labelLength > 10) {
@@ -97,16 +94,12 @@ class FeatureChip extends StatelessWidget {
               contentPadding ??
               padding ??
               EdgeInsets.symmetric(
-                vertical: (label?.length ?? 10) > 28
-                    ? 10.r
-                    : defaultVerticalPadding.r,
+                vertical: (label?.length ?? 10) > 28 ? 10.r : defaultVerticalPadding.r,
                 horizontal: (label?.length ?? 10) > 5 ? 12.r : 24.r,
               ),
           child: icon != null
               ? Row(
-                  mainAxisSize: isMaxWidth
-                      ? MainAxisSize.max
-                      : MainAxisSize.min,
+                  mainAxisSize: isMaxWidth ? MainAxisSize.max : MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     icon!.buildIconWidget(

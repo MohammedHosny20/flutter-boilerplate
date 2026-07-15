@@ -20,8 +20,7 @@ class ConnectionStatusWidget extends StatefulWidget {
 }
 
 class _ConnectionStatusWidgetState extends State<ConnectionStatusWidget> {
-  ConnectionStatusController get controller =>
-      Get.find<ConnectionStatusController>();
+  ConnectionStatusController get controller => Get.find<ConnectionStatusController>();
 
   Worker? connectionWorker;
 

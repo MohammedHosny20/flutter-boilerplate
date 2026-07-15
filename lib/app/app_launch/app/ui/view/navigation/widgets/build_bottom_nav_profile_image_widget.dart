@@ -1,16 +1,15 @@
 part of '../../../imports/app_imports.dart';
 
-class BuildBottomNavProfileImageWidget extends StatelessWidget {
-  const BuildBottomNavProfileImageWidget();
-
-  AppController get controller => AppController.instance;
+class BuildBottomNavProfileImageWidget extends ConsumerWidget {
+  const BuildBottomNavProfileImageWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(appControllerProvider);
+    final controller = ref.read(appControllerProvider.notifier);
     return CircleAvatar(
       radius: PlayxPlatform.isCupertino ? 11 : 14,
-      backgroundColor:
-          controller.currentBottomNavIndex == controller.bottomNavItems.length
+      backgroundColor: controller.currentBottomNavIndex == state.bottomNavItems.length
           ? PlayxPlatform.isIOS
                 ? context.colors.primary
                 : context.colors.onSecondaryContainer
@@ -19,34 +18,36 @@ class BuildBottomNavProfileImageWidget extends StatelessWidget {
         radius: PlayxPlatform.isCupertino ? 10 : 14,
         backgroundColor: context.colors.surface,
         child: ClipOval(
-          child: Obx(() {
-            // final imageUrl = controller.userInfo.value?.image?.url ?? '';
-            const imageUrl = '';
-            if (imageUrl.isEmpty) {
-              return PlaceholderImageWidget(
-                path: Assets.images.profilePlaceholder,
-                padding: EdgeInsets.zero,
+          child: Builder(
+            builder: (context) {
+              // final imageUrl = state.currentUser?.image?.url ?? '';
+              const imageUrl = '';
+              if (imageUrl.isEmpty) {
+                return PlaceholderImageWidget(
+                  path: Assets.images.profilePlaceholder,
+                  padding: EdgeInsets.zero,
+                );
+              }
+              return ImageViewer.cachedNetwork(
+                imageUrl,
+                errorBuilder:
+                    (
+                      context,
+                      error,
+                    ) => PlaceholderImageWidget(
+                      path: Assets.images.profilePlaceholder,
+                      padding: EdgeInsets.zero,
+                    ),
+                placeholderBuilder:
+                    (
+                      context,
+                    ) => PlaceholderImageWidget(
+                      path: Assets.images.profilePlaceholder,
+                      padding: EdgeInsets.zero,
+                    ),
               );
-            }
-            return ImageViewer.cachedNetwork(
-              imageUrl,
-              errorBuilder:
-                  (
-                    context,
-                    error,
-                  ) => PlaceholderImageWidget(
-                    path: Assets.images.profilePlaceholder,
-                    padding: EdgeInsets.zero,
-                  ),
-              placeholderBuilder:
-                  (
-                    context,
-                  ) => PlaceholderImageWidget(
-                    path: Assets.images.profilePlaceholder,
-                    padding: EdgeInsets.zero,
-                  ),
-            );
-          }),
+            },
+          ),
         ),
       ),
     );

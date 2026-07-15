@@ -50,56 +50,52 @@ class BuildSettingsDialog<T> extends StatelessWidget {
                       horizontal: 2.w,
                       vertical: 2.h,
                     ),
-                    child: Obx(() {
-                      return ListTile(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 6.w,
-                          vertical: 6.h,
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 6.h,
+                      ),
+                      trailing: isItemSelected(item)
+                          ? Icon(
+                              Icons.check,
+                              size: 20.r,
+                            )
+                          : null,
+                      onTap: () => onItemSelected(item),
+                      leading: itemIcon != null
+                          ? Container(
+                              width: 36.w,
+                              height: 36.h,
+                              padding: EdgeInsets.symmetric(horizontal: 6.w),
+                              alignment: Alignment.center,
+                              child: ImageViewer.svgAsset(
+                                itemIcon!(item),
+                              ),
+                            )
+                          : itemIconWidget != null
+                          ? Container(
+                              width: 36.w,
+                              height: 36.h,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 6.w,
+                              ),
+                              alignment: Alignment.center,
+                              child: itemIconWidget!(item),
+                            )
+                          : null,
+                      title: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 4.w,
+                          vertical: 4.h,
                         ),
-                        trailing: isItemSelected(item)
-                            ? Icon(
-                                Icons.check,
-                                // color: context.colors.primary,
-                                size: 20.r,
-                              )
-                            : null,
-                        onTap: () => onItemSelected(item),
-                        leading: itemIcon != null
-                            ? Container(
-                                width: 36.w,
-                                height: 36.h,
-                                padding: EdgeInsets.symmetric(horizontal: 6.w),
-                                alignment: Alignment.center,
-                                child: ImageViewer.svgAsset(
-                                  itemIcon!(item),
-                                ),
-                              )
-                            : itemIconWidget != null
-                            ? Container(
-                                width: 36.w,
-                                height: 36.h,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 6.w,
-                                ),
-                                alignment: Alignment.center,
-                                child: itemIconWidget!(item),
-                              )
-                            : null,
-                        title: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 4.w,
-                            vertical: 4.h,
-                          ),
-                          child: Text(
-                            itemName(item),
-                            style: TextStyle(
-                              // color: context.colors.onSurface,
-                              fontSize: 14.sp,
-                            ),
+                        child: Text(
+                          itemName(item),
+                          style: TextStyle(
+                            fontSize: 14.sp,
                           ),
                         ),
-                      );
-                    }),
+                      ),
+                    ),
                   ),
                 )
                 .toList(),

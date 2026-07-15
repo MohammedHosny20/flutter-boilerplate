@@ -21,8 +21,7 @@ class CustomModal {
   /// Show only page modal
   static Future<void> showPageModal({
     required BuildContext context,
-    required SliverWoltModalSheetPage Function(BuildContext context)
-    pageBuilder,
+    required SliverWoltModalSheetPage Function(BuildContext context) pageBuilder,
     VoidCallback? onModalDismissedWithBarrierTap,
     ValueNotifier<bool>? showModalTopBar,
     bool barrierDismissible = true,
@@ -30,6 +29,7 @@ class CustomModal {
     return WoltModalSheet.show<void>(
       context: context,
       barrierDismissible: barrierDismissible,
+      useRootNavigator: true,
       pageListBuilder: (ctx) {
         return [pageBuilder(ctx)];
       },
@@ -54,6 +54,7 @@ class CustomModal {
       pageIndexNotifier: pageIndexNotifier,
       barrierDismissible: true,
       context: context,
+      useRootNavigator: true,
       pageListBuilder: (ctx) {
         return pageListBuilder(ctx);
       },

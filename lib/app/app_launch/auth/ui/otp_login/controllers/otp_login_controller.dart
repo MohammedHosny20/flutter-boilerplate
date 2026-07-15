@@ -1,42 +1,57 @@
 part of '../imports/login_view_imports.dart';
 
 ///Login controller to setup data to the ui.
-class OtpLoginController extends GetxController {
-  final AuthRepository authRepository;
+class OtpLoginState {
+  final bool isLoading;
+  final bool isPhoneNumberValid;
 
-  OtpLoginController({
-    required this.authRepository,
+  OtpLoginState({
+    this.isLoading = false,
+    this.isPhoneNumberValid = false,
   });
 
-  final isLoading = false.obs;
+  OtpLoginState copyWith({
+    bool? isLoading,
+    bool? isPhoneNumberValid,
+  }) {
+    return OtpLoginState(
+      isLoading: isLoading ?? this.isLoading,
+      isPhoneNumberValid: isPhoneNumberValid ?? this.isPhoneNumberValid,
+    );
+  }
+}
+
+class OtpLoginController extends Notifier<OtpLoginState> {
   final phoneController = TextEditingController();
 
-  final isPhoneNumberValid = false.obs;
-
   @override
-  void onInit() {
+  OtpLoginState build() {
     if (kDebugMode) {
       // phoneController.text = '1121221';
-      // isPhoneNumberValid.value = true;
-      // isFormValid.value = true;
+      // state = state.copyWith(isPhoneNumberValid: true);
     }
-    super.onInit();
+    return OtpLoginState();
+  }
+
+  void setPhoneNumberValid(bool value) {
+    state = state.copyWith(isPhoneNumberValid: value);
   }
 
   Future<void> login() async {
-    if (!isPhoneNumberValid.value) return;
+    if (!state.isPhoneNumberValid) return;
     WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
-    isLoading.value = true;
-    final result = await authRepository.otpLogin(
+    state = state.copyWith(isLoading: true);
+    final authRepo = await ref.read(authRepositoryProvider.future);
+    final result = await authRepo.otpLogin(
       phoneNumber: phoneController.text,
     );
     result.when(
       success: (user) async {
-        isLoading.value = false;
+        state = state.copyWith(isLoading: false);
         AppNavigation.navigateFromLoginToVerifyPhone();
       },
       error: (NetworkException exception) {
-        isLoading.value = false;
+        state = state.copyWith(isLoading: false);
         Alert.error(message: exception.message);
       },
     );
@@ -45,9 +60,8 @@ class OtpLoginController extends GetxController {
   void navigateToRegister() {
     AppNavigation.navigateFromLoginToRegister();
   }
-
-  @override
-  void onClose() {
-    phoneController.dispose();
-  }
 }
+
+final otpLoginControllerProvider = NotifierProvider<OtpLoginController, OtpLoginState>(
+  OtpLoginController.new,
+);

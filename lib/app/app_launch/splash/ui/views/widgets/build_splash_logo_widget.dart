@@ -1,10 +1,11 @@
 part of '../../imports/splash_imports.dart';
 
-class _BuildSplashLogoWidget extends GetView<SplashController> {
+class _BuildSplashLogoWidget extends ConsumerWidget {
   const _BuildSplashLogoWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(splashControllerProvider.notifier);
     return SizedBox(
           width: context.width * .6,
           height: context.height * .6,

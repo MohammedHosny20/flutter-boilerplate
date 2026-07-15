@@ -1,12 +1,16 @@
 part of '../imports/wishlist_imports.dart';
 
-class WishlistView extends GetView<WishlistController> {
+class WishlistView extends ConsumerWidget {
+  const WishlistView({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(wishlistControllerProvider);
+
     return CustomScaffold(
       title: AppTrans.wishlist,
-      child: RxDataStateWidget(
-        rxData: controller.dataState,
+      child: DataStateWidget(
+        data: state.dataState,
         onSuccess: (data) {
           return ListView.builder(
             itemCount: data.length,
@@ -14,7 +18,7 @@ class WishlistView extends GetView<WishlistController> {
               final item = data[index];
               return InkWell(
                 onTap: () {
-                  PlayxNavigation.toNamed(Routes.wishlistDetails, extra: item);
+                  context.goNamed(Routes.wishlistDetails, extra: item);
                 },
                 child: CustomCard(
                   padding: EdgeInsets.zero,

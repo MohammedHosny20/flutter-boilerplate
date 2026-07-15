@@ -11,10 +11,7 @@ class WishlistDao {
   }
 
   Stream<List<DatabaseWishlistItem>> watchAllWishlistItems() {
-    return box
-        .query()
-        .watch(triggerImmediately: true)
-        .asyncMap((query) => query.findAsync());
+    return box.query().watch(triggerImmediately: true).asyncMap((query) => query.findAsync());
   }
 
   Future<int> insertWishlistItem(DatabaseWishlistItem wishlist) {
@@ -23,7 +20,7 @@ class WishlistDao {
 
   Future<List<int>> insertWishlistItems(
     List<DatabaseWishlistItem> wishlistItems,
-  ) async {
+  ) {
     return box.putManyAsync(wishlistItems);
   }
 

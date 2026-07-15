@@ -1,10 +1,11 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterNameFieldWidget extends GetView<RegisterController> {
+class BuildRegisterNameFieldWidget extends ConsumerWidget {
   const BuildRegisterNameFieldWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(registerControllerProvider.notifier);
     return Row(
       children: [
         Expanded(
@@ -33,7 +34,7 @@ class BuildRegisterNameFieldWidget extends GetView<RegisterController> {
               ),
               shouldAutoValidate: true,
               onValidationChanged: (isValid) {
-                controller.isFirstNameValid.value = isValid;
+                controller.setFirstNameValid(isValid);
               },
               textInputAction: TextInputAction.next,
               focus: controller.firstNameFocus,
@@ -67,7 +68,7 @@ class BuildRegisterNameFieldWidget extends GetView<RegisterController> {
               ),
               shouldAutoValidate: true,
               onValidationChanged: (isValid) {
-                controller.isLastNameValid.value = isValid;
+                controller.setLastNameValid(isValid);
               },
               textInputAction: TextInputAction.next,
               focus: controller.lastNameFocus,

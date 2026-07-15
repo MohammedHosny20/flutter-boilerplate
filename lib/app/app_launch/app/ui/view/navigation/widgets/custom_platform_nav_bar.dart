@@ -18,9 +18,7 @@ class CustomPlatformNavBar extends PlatformNavBar {
   @override
   Widget createMaterialWidget(BuildContext context) {
     final useMaterial3 = Theme.of(context).useMaterial3;
-    return useMaterial3
-        ? _createMaterial3Widget(context)
-        : _createMaterial2Widget(context);
+    return useMaterial3 ? _createMaterial3Widget(context) : _createMaterial2Widget(context);
   }
 
   Widget _createMaterial3Widget(BuildContext context) {

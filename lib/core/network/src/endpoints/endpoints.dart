@@ -4,6 +4,9 @@ part of '../../network.dart';
 abstract class Endpoints {
   static const baseUrl = "https://sourcya-connect.herokuapp.com";
 
+  /// REST Countries API v5 — used by the countries feature.
+  static const restCountriesBaseUrl = "https://api.restcountries.com/countries/v5";
+
   /// `POST`
   static const loginViaAuth0 = '/auth/auth0/callback';
   static const login = '/auth/local';

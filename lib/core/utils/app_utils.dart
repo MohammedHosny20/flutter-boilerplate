@@ -13,7 +13,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 /// Class for app utilities that will be used in the app.
 class AppUtils {
-  AppUtils._();
+  const AppUtils._();
 
   /// validates text field forms state and apply it to an RxBool
   static void validate(GlobalKey<FormState> key, RxBool validatorListener) {
@@ -27,10 +27,6 @@ class AppUtils {
     final double height = ScreenUtil().screenHeight;
     final shortestSide = min(width.abs(), height.abs());
     return shortestSide < 600;
-  }
-
-  double _degreesToRadians(double degrees) {
-    return degrees * pi / 180;
   }
 
   String? getFormattedDuration({
@@ -65,8 +61,7 @@ class AppUtils {
     return "$daysText$hoursText$minText";
   }
 
-  String get spaceOnArabicText =>
-      PlayxLocalization.isCurrentLocaleArabic() ? ' ' : '';
+  String get spaceOnArabicText => PlayxLocalization.isCurrentLocaleArabic() ? ' ' : '';
 
   String? getFormattedDurationForSeconds({
     num? seconds,
@@ -144,8 +139,7 @@ Future<void> contactSupportViaWhatsapp({BuildContext? context}) async {
   final emailText = email.isNotEmpty ? email : AppTrans.notLoggedIn.tr();
   final text = AppTrans.whatsappContactMsg.tr().format([emailText, version]);
 
-  final androidUrl =
-      "whatsapp://send?phone=${Constants.whatsappNumber}&text=$text";
+  final androidUrl = "whatsapp://send?phone=${Constants.whatsappNumber}&text=$text";
   final iosUrl = "https://wa.me/${Constants.whatsappNumber}?text=$text";
 
   try {

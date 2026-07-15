@@ -46,9 +46,7 @@ class Auth0AuthDataSource {
   Future<NetworkResult<ApiUser>> login({
     LoginMethod method = LoginMethod.auth0Web,
   }) async {
-    return PlayxPlatform.isWeb
-        ? _loginWithWeb(method: method)
-        : _loginWithMobile(method: method);
+    return PlayxPlatform.isWeb ? _loginWithWeb(method: method) : _loginWithMobile(method: method);
   }
 
   Future<NetworkResult<ApiUser>> _loginWithMobile({
@@ -136,8 +134,7 @@ class Auth0AuthDataSource {
     }
   }
 
-  Future<String?> get profileImageUrl async =>
-      (await getCredentials())?.user.pictureUrl.toString();
+  Future<String?> get profileImageUrl async => (await getCredentials())?.user.pictureUrl.toString();
 
   Future<NetworkResult<ApiUser>> _updateUserInfo({
     required NetworkResult<ApiUser> res,
@@ -153,10 +150,7 @@ class Auth0AuthDataSource {
             user.firstName!.isEmpty ||
             user.lastName == null ||
             user.lastName!.isEmpty) {
-          final firstName =
-              user.firstName ??
-              credentials.user.givenName ??
-              credentials.user.name;
+          final firstName = user.firstName ?? credentials.user.givenName ?? credentials.user.name;
           final lastName = user.lastName ?? credentials.user.familyName;
           final imageUrl = credentials.user.pictureUrl.toString();
           final image = user.image ?? MediaItem(url: imageUrl);
@@ -171,8 +165,7 @@ class Auth0AuthDataSource {
             user: updatedUser,
             jwtToken: token,
           );
-          if (updateUserRes is NetworkSuccess<ApiUserInfo> &&
-              token.isNotEmpty) {
+          if (updateUserRes is NetworkSuccess<ApiUserInfo> && token.isNotEmpty) {
             return NetworkSuccess(
               ApiUser(
                 jwt: res.data.jwt,

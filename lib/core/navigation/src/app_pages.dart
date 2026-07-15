@@ -28,35 +28,36 @@ class AppPages {
     branches: [
       StatefulShellBranch(
         routes: [
-          PlayxRoute(
+          GoRoute(
             path: Paths.dashboard,
             name: Routes.dashboard,
-            builder: (ctx, state) => DashboardView(),
-            binding: DashboardBinding(),
+            builder: (ctx, state) => const DashboardView(),
           ),
         ],
       ),
       StatefulShellBranch(
         routes: [
-          PlayxRoute(
+          GoRoute(
             path: Paths.wishlist,
             name: Routes.wishlist,
             builder: (ctx, state) {
-              return WishlistView();
+              return const WishlistView();
             },
-            binding: WishlistBinding(),
             routes: [
-              PlayxRoute(
+              GoRoute(
                 path: Paths.wishlistDetails,
                 name: Routes.wishlistDetails,
                 builder: (ctx, state) {
+                  final item = state.extra;
+                  if (item is WishlistItem) {
+                    return WishlistDetailsView(item: item);
+                  }
                   return const Scaffold(
                     body: Center(
                       child: Text('Wishlist Details'),
                     ),
                   );
                 },
-                binding: WishlistDetailsBinding(),
               ),
             ],
           ),
@@ -64,11 +65,29 @@ class AppPages {
       ),
       StatefulShellBranch(
         routes: [
-          PlayxRoute(
+          GoRoute(
+            path: Paths.countries,
+            name: Routes.countries,
+            builder: (ctx, state) => const CountriesListView(),
+            routes: [
+              GoRoute(
+                path: Paths.countryDetails,
+                name: Routes.countryDetails,
+                builder: (ctx, state) {
+                  final code = state.pathParameters['code'] ?? '';
+                  return CountryDetailsView(code: code);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+      StatefulShellBranch(
+        routes: [
+          GoRoute(
             path: Paths.settings,
             name: Routes.settings,
             builder: (ctx, state) => const SettingsView(),
-            binding: SettingsBinding(),
           ),
         ],
       ),
@@ -76,29 +95,35 @@ class AppPages {
   );
 
   static final routes = [
-    PlayxRoute(
+    GoRoute(
       path: Paths.splash,
       name: Routes.splash,
       builder: (context, state) => const SplashView(),
-      binding: SplashBinding(),
     ),
-    PlayxRoute(
+    GoRoute(
       path: Paths.login,
       name: Routes.login,
       builder: (context, state) => const LoginView(),
-      binding: LoginBinding(),
     ),
-    PlayxRoute(
+    GoRoute(
+      path: Paths.otpLogin,
+      name: Routes.otpLogin,
+      builder: (context, state) => const OtpLoginView(),
+    ),
+    GoRoute(
+      path: Paths.verifyPhone,
+      name: Routes.verifyPhone,
+      builder: (context, state) => const VerifyPhoneView(),
+    ),
+    GoRoute(
       path: Paths.register,
       name: Routes.register,
       builder: (context, state) => const RegisterView(),
-      binding: RegisterBinding(),
     ),
-    PlayxRoute(
+    GoRoute(
       path: Paths.onboarding,
       name: Routes.onboarding,
-      builder: (context, state) => OnBoardingView(),
-      binding: OnBoardingBinding(),
+      builder: (context, state) => const OnBoardingView(),
     ),
     _homeNavigationRoutes,
   ];

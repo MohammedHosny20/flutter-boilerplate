@@ -1,7 +1,6 @@
 part of '../ui.dart';
 
-class PagedGroupedGridView<PageKeyType, ItemType, SortType>
-    extends BoxScrollView {
+class PagedGroupedGridView<PageKeyType, ItemType, SortType> extends BoxScrollView {
   const PagedGroupedGridView({
     super.key,
     required this.pagingController,
@@ -90,8 +89,7 @@ class PagedGroupedGridView<PageKeyType, ItemType, SortType>
   }
 }
 
-class PagedSliverGroupedGrid<PageKeyType, ItemType, SortType>
-    extends StatelessWidget {
+class PagedSliverGroupedGrid<PageKeyType, ItemType, SortType> extends StatelessWidget {
   const PagedSliverGroupedGrid({
     required this.pagingController,
     required this.builderDelegate,

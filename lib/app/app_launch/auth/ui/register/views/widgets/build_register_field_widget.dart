@@ -1,6 +1,6 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterFieldWidget extends GetView<RegisterController> {
+class BuildRegisterFieldWidget extends ConsumerWidget {
   final String label;
   final Widget textField;
 
@@ -10,7 +10,7 @@ class BuildRegisterFieldWidget extends GetView<RegisterController> {
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: 8.r,

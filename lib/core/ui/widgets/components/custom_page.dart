@@ -1,6 +1,6 @@
 part of '../../ui.dart';
 
-class CustomPageScaffold extends StatelessWidget {
+class CustomPageScaffold extends ConsumerWidget {
   final StatefulNavigationShell? navigationShell;
   final Widget? child;
   final String? title;
@@ -15,55 +15,52 @@ class CustomPageScaffold extends StatelessWidget {
   final GoRouterState state;
 
   const CustomPageScaffold({
+    super.key,
     this.child,
     this.title,
     this.padding,
     this.appBar,
-    this.canShowDrawer = false,
+    this.canShowDrawer = true,
     this.disabledGestures = true,
     this.showBottomNav = false,
     required this.state,
   }) : navigationShell = null;
 
   const CustomPageScaffold.navigationShell({
+    super.key,
     required this.navigationShell,
     this.title,
     this.padding,
     this.appBar,
-    this.canShowDrawer = false,
+    this.canShowDrawer = true,
     this.disabledGestures = true,
     this.showBottomNav = false,
     required this.state,
   }) : child = null;
 
   @override
-  Widget build(BuildContext context) {
-    final appController = AppController.instance;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final appState = ref.watch(appControllerProvider);
+    final appController = ref.read(appControllerProvider.notifier);
 
     final scaffoldChild = PlatformScaffold(
       backgroundColor: context.colors.surface,
       body: Stack(
         children: [
           navigationShell ?? child ?? const SizedBox.shrink(),
-          Obx(() {
-            return LoadingOverlay(
-              loadingStatus: appController.loadingStatus.value,
-            );
-          }),
+          LoadingOverlay(
+            loadingStatus: appController.loadingStatus.value,
+          ),
         ],
       ),
     );
 
     return navigationShell != null && canShowDrawer
-        ? Obx(() {
-            return CustomDrawer(
-              navigationShell: navigationShell!,
-              disabledGestures:
-                  AppController.instance.disableDrawerGestures.value ||
-                  disabledGestures,
-              child: scaffoldChild,
-            );
-          })
+        ? CustomDrawer(
+            navigationShell: navigationShell!,
+            disabledGestures: appState.disableDrawerGestures || disabledGestures,
+            child: scaffoldChild,
+          )
         : scaffoldChild;
   }
 

@@ -114,9 +114,7 @@ class CustomText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final translatedText = isTranslatable
-        ? text.tr(context: translationContext ?? context)
-        : text;
+    final translatedText = isTranslatable ? text.tr(context: translationContext ?? context) : text;
 
     final effectiveTextStyle =
         textStyle?.copyWith(

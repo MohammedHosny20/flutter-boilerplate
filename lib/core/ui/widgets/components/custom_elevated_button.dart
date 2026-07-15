@@ -55,9 +55,7 @@ class CustomElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding:
-          margin ??
-          EdgeInsets.only(right: 14.r, left: 14.r, top: 11.r, bottom: 11.r),
+      padding: margin ?? EdgeInsets.only(right: 14.r, left: 14.r, top: 11.r, bottom: 11.r),
       width:
           width ??
           (isMaxWidth
@@ -69,17 +67,13 @@ class CustomElevatedButton extends StatelessWidget {
         gradient: gradient,
         borderRadius:
             borderRadius ??
-            (isCompact
-                ? Style.compactButtonBorderRadius
-                : Style.buttonBorderRadius),
+            (isCompact ? Style.compactButtonBorderRadius : Style.buttonBorderRadius),
       ),
       child: Container(
         decoration: BoxDecoration(
           borderRadius:
               borderRadius ??
-              (isCompact
-                  ? Style.compactButtonBorderRadius
-                  : Style.buttonBorderRadius),
+              (isCompact ? Style.compactButtonBorderRadius : Style.buttonBorderRadius),
           border: borderColor != null ? Border.all(color: borderColor!) : null,
         ),
         child: PlatformElevatedButton(
@@ -92,8 +86,7 @@ class CustomElevatedButton extends StatelessWidget {
           material: (ctx, _) => MaterialElevatedButtonData(
             style: ElevatedButton.styleFrom(
               disabledBackgroundColor:
-                  disabledBackground ??
-                  context.colors.disabledButtonBackgroundColor,
+                  disabledBackground ?? context.colors.disabledButtonBackgroundColor,
               padding:
                   padding ??
                   (isCompact
@@ -102,25 +95,17 @@ class CustomElevatedButton extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius:
                     borderRadius ??
-                    (isCompact
-                        ? Style.compactButtonBorderRadius
-                        : Style.buttonBorderRadius),
-                side: borderColor != null
-                    ? BorderSide(color: borderColor!)
-                    : BorderSide.none,
+                    (isCompact ? Style.compactButtonBorderRadius : Style.buttonBorderRadius),
+                side: borderColor != null ? BorderSide(color: borderColor!) : BorderSide.none,
               ),
               backgroundColor: gradient != null
                   ? Colors.transparent
                   : backgroundColor ?? context.colors.primary,
             ),
           ),
-          color: gradient != null
-              ? Colors.transparent
-              : backgroundColor ?? context.colors.primary,
+          color: gradient != null ? Colors.transparent : backgroundColor ?? context.colors.primary,
           cupertino: (ctx, _) => CupertinoElevatedButtonData(
-            disabledColor:
-                disabledBackground ??
-                context.colors.disabledButtonBackgroundColor,
+            disabledColor: disabledBackground ?? context.colors.disabledButtonBackgroundColor,
             padding:
                 padding ??
                 (isCompact
@@ -128,9 +113,7 @@ class CustomElevatedButton extends StatelessWidget {
                     : EdgeInsets.symmetric(horizontal: 8.r, vertical: 18.r)),
             borderRadius:
                 borderRadius ??
-                (isCompact
-                    ? Style.compactButtonBorderRadius
-                    : Style.buttonBorderRadius),
+                (isCompact ? Style.compactButtonBorderRadius : Style.buttonBorderRadius),
           ),
           child: _buildChildWidget(
             context,

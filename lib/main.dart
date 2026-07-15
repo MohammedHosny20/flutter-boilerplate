@@ -6,6 +6,7 @@ import 'package:flutter_boilerplate/core/config/app_config.dart';
 import 'package:flutter_boilerplate/core/navigation/navigation.dart';
 import 'package:flutter_boilerplate/core/preferences/env_manger.dart';
 import 'package:flutter_boilerplate/core/ui/ui.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:playx/playx.dart';
 
 const enableDevicePreviewOnWeb = true;
@@ -15,8 +16,7 @@ void main() {
     appConfigBuilder: () => AppConfig(),
     themeConfigBuilder: () => AppThemeConfig.createThemeConfig(),
     localeConfigBuilder: () => AppLocaleConfig.createLocaleConfig(),
-    envSettingsBuilder: () =>
-        const PlayxEnvSettings(fileName: 'assets/env/keys.env'),
+    envSettingsBuilder: () => const PlayxEnvSettings(fileName: 'assets/env/keys.env'),
     securePrefsSettings: const PlayxSecurePrefsSettings(
       createSecurePrefs: false,
       androidOptions: AndroidOptions.defaultOptions,
@@ -28,8 +28,10 @@ void main() {
       options.captureFailedRequests = true;
     },
     app: kIsWeb && enableDevicePreviewOnWeb
-        ? DevicePreview(builder: (context) => const MyApp())
-        : const MyApp(),
+        ? DevicePreview(
+            builder: (context) => const ProviderScope(child: MyApp()),
+          )
+        : const ProviderScope(child: MyApp()),
   );
 }
 
@@ -53,9 +55,7 @@ class MyApp extends StatelessWidget {
               ),
               navigationSettings: PlayxNavigationSettings.goRouter(
                 goRouter: AppPages.router,
-                builder: kIsWeb && enableDevicePreviewOnWeb
-                    ? DevicePreview.appBuilder
-                    : null,
+                builder: kIsWeb && enableDevicePreviewOnWeb ? DevicePreview.appBuilder : null,
               ),
               screenSettings: const PlayxScreenSettings(
                 ensureScreenSize: true,

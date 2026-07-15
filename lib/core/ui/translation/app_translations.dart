@@ -73,6 +73,8 @@ abstract class AppTrans {
   static const loginWithEmailLabel = 'loginWithEmailLabel';
   static const loginWithGoogleLabel = 'loginWithGoogleLabel';
   static const loginWithAppleLabel = 'loginWithAppleLabel';
+  static const loginWithPhoneLabel = 'loginWithPhoneLabel';
+  static const countries = 'countries';
   static const emailOrPasswordIncorrect = 'emailOrPasswordIncorrect';
   static const loginPrompt = 'loginPrompt';
 
@@ -152,10 +154,8 @@ abstract class AppTrans {
   static const validNumberMinLength = 'validNumberMinLength';
 
   static const noInternetConnectionBannerMsg = 'noInternetConnectionBannerMsg';
-  static const internetConnectionRestoredBannerMsg =
-      'internetConnectionRestoredBannerMsg';
-  static const noInternetConnectionDismissBannerMsg =
-      'noInternetConnectionDismissBannerMsg';
+  static const internetConnectionRestoredBannerMsg = 'internetConnectionRestoredBannerMsg';
+  static const noInternetConnectionDismissBannerMsg = 'noInternetConnectionDismissBannerMsg';
   static const refresh = 'refresh';
 
   static const confirm = 'confirm';
@@ -165,18 +165,13 @@ abstract class AppTrans {
   static const bluePurpleGradientTheme = 'bluePurpleGradientTheme';
 
   static const userCanceledLoginErrorMessage = 'userCanceledLoginErrorMessage';
-  static const browserNotAvailableErrorMessage =
-      'browserNotAvailableErrorMessage';
+  static const browserNotAvailableErrorMessage = 'browserNotAvailableErrorMessage';
   static const pkceNotAvailableErrorMessage = 'pkceNotAvailableErrorMessage';
-  static const invalidAuthorizeUrlErrorMessage =
-      'invalidAuthorizeUrlErrorMessage';
-  static const invalidConfigurationErrorMessage =
-      'invalidConfigurationErrorMessage';
+  static const invalidAuthorizeUrlErrorMessage = 'invalidAuthorizeUrlErrorMessage';
+  static const invalidConfigurationErrorMessage = 'invalidConfigurationErrorMessage';
   static const mfaRequiredErrorMessage = 'mfaRequiredErrorMessage';
-  static const mfaRegistrationRequiredErrorMessage =
-      'mfaRegistrationRequiredErrorMessage';
-  static const requiresVerificationErrorMessage =
-      'requiresVerificationErrorMessage';
+  static const mfaRegistrationRequiredErrorMessage = 'mfaRegistrationRequiredErrorMessage';
+  static const requiresVerificationErrorMessage = 'requiresVerificationErrorMessage';
   static const passwordLeakedErrorMessage = 'passwordLeakedErrorMessage';
   static const ruleError = 'ruleError';
   static const accessDeniedErrorMessage = 'accessDeniedErrorMessage';
@@ -210,4 +205,17 @@ abstract class AppTrans {
   static const logoutDialogTitle = 'logoutDialogTitle';
 
   static const logoutDialogMessage = 'logoutDialogMessage';
+
+  // Countries feature
+  static const searchCountries = 'searchCountries';
+  static const noCountriesFound = 'noCountriesFound';
+  static const countryDetails = 'countryDetails';
+  static const code = 'code';
+  static const capital = 'capital';
+  static const region = 'region';
+  static const subregion = 'subregion';
+  static const population = 'population';
+  static const timezones = 'timezones';
+  static const languages = 'languages';
+  static const currencies = 'currencies';
 }

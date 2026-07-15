@@ -74,6 +74,8 @@
   "loginWithAuth0Label": "تسجيل الدخول باستخدام Auth0",
   "loginWithEmailLabel": "تسجيل الدخول باستخدام البريد الإلكتروني",
   "loginWithGoogleLabel": "تسجيل الدخول باستخدام Google",
+  "loginWithPhoneLabel": "تسجيل الدخول باستخدام الهاتف",
+  "countries": "الدول",
   "logout": "تسجيل الخروج",
   "loremIpsum": "لوريم إيبسوم دولار سيت أميت، كونسيكتيتور أديبيسينغ إيليت. دونيك يوسيمود نيبس يوريسوس موليس، إيجيت بورتيتور إروس تينسيدونت. موريس فيتاي أورنا أك دولور سكليريسكي إنتردم.  ",
   "mfaRegistrationRequiredErrorMessage": "المصادقة متعددة العوامل (MFA) مطلوبة ولكن المستخدم غير مسجل.",
@@ -152,5 +154,16 @@
   "support": "الدعم",
   "search": "بحث",
   "logoutDialogTitle": "تسجيل الخروج",
-  "logoutDialogMessage": "هل أنت متأكد من رغبتك في تسجيل الخروج؟"
+  "logoutDialogMessage": "هل أنت متأكد من رغبتك في تسجيل الخروج؟",
+  "searchCountries": "ابحث عن الدول...",
+  "noCountriesFound": "لا توجد دول",
+  "countryDetails": "تفاصيل الدولة",
+  "code": "الرمز",
+  "capital": "العاصمة",
+  "region": "المنطقة",
+  "subregion": "المنطقة الفرعية",
+  "population": "عدد السكان",
+  "timezones": "المناطق الزمنية",
+  "languages": "اللغات",
+  "currencies": "العملات"
 }

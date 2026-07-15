@@ -2,64 +2,114 @@ part of '../imports/settings_imports.dart';
 
 enum SettingsPage { settings, language, theme }
 
-class SettingsController extends GetxController {
-  Rxn<XLocale> currentLocale = Rxn(PlayxLocalization.currentXLocale);
-  Rx<XTheme> currentTheme = Rx(PlayxTheme.currentTheme);
+class SettingsState {
+  final XLocale? currentLocale;
+  final XTheme currentTheme;
+  final int currentPage;
+
+  SettingsState({
+    this.currentLocale,
+    required this.currentTheme,
+    this.currentPage = 0,
+  });
+
+  SettingsState copyWith({
+    XLocale? currentLocale,
+    XTheme? currentTheme,
+    int? currentPage,
+  }) {
+    return SettingsState(
+      currentLocale: currentLocale ?? this.currentLocale,
+      currentTheme: currentTheme ?? this.currentTheme,
+      currentPage: currentPage ?? this.currentPage,
+    );
+  }
+}
+
+class SettingsController extends Notifier<SettingsState> {
+  @override
+  SettingsState build() {
+    return SettingsState(
+      currentLocale: PlayxLocalization.currentXLocale,
+      currentTheme: PlayxTheme.currentTheme,
+      currentPage: SettingsPage.settings.index,
+    );
+  }
 
   List<XLocale> get supportedLocales => PlayxLocalization.supportedXLocales;
 
-  final currentPage = ValueNotifier(SettingsPage.settings.index);
-
-  @override
-  Future<void> onInit() async {
-    super.onInit();
-  }
-
   void handleLanguageSelection(XLocale locale) {
-    currentLocale.value = locale;
+    state = state.copyWith(currentLocale: locale);
     PlayxLocalization.updateTo(locale);
-    PlayxNavigation.pop();
+    final ctx = NavigationUtils.navigationContext;
+    if (ctx != null && Navigator.of(ctx).canPop()) Navigator.of(ctx).pop();
   }
 
   Future<void> handleThemeSelection(
     XTheme theme, {
     BuildContext? context,
   }) async {
-    PlayxNavigation.pop();
+    final ctx = NavigationUtils.navigationContext;
+    if (ctx != null && Navigator.of(ctx).canPop()) Navigator.of(ctx).pop();
     await Future.delayed(const Duration(milliseconds: 500));
     await PlayxTheme.updateTo(
       theme,
       animation: PlayxThemeClipperAnimation(),
     );
-    currentTheme.value = theme;
+    state = state.copyWith(currentTheme: theme);
   }
 
   Future<void> handleLogOutTap() async {
-    AppController.instance.logout();
+    ref.read(appControllerProvider.notifier).logout();
   }
 
   Future<void> showSettingsModalSheet(
     BuildContext context,
   ) async {
-    final List<SliverWoltModalSheetPage> settingsPages = [
-      SettingsView.buildSettingsModalSheetPage(this, context),
-      BuildSettingsLanguageWidget.buildModalPage(
-        controller: this,
-        context: context,
-        isOnlyPage: false,
-      ),
-      BuildSettingsThemeWidget.buildModalPage(
-        controller: this,
-        context: context,
-        isOnlyPage: false,
-      ),
-    ];
-
+    final pageNotifier = ValueNotifier<int>(state.currentPage);
+    final currentState = state;
     return CustomModal.showModal(
       context: context,
-      pageListBuilder: (context) => settingsPages,
+      pageListBuilder: (context) => [
+        CustomModal.buildCustomModalPage(
+          title: AppTrans.settings,
+          body: const SettingsView(),
+          onClosePressed: closeSettingsModalSheet,
+          context: context,
+        ),
+        BuildSettingsPage.buildModalPage(
+          title: AppTrans.language,
+          items: supportedLocales,
+          onItemSelected: (lang) => handleLanguageSelection(lang),
+          itemName: (lang) => lang.name,
+          isItemSelected: (lang) => currentState.currentLocale == lang,
+          onBackButtonPressed: () {
+            state = state.copyWith(
+              currentPage: SettingsPage.settings.index,
+            );
+          },
+          showPreviousButton: !false,
+          onCloseButtonPressed: closeSettingsModalSheet,
+          context: context,
+        ),
+        BuildSettingsPage.buildModalPage(
+          title: AppTrans.theme,
+          items: PlayxTheme.supportedThemes,
+          onItemSelected: (theme) => handleThemeSelection(theme, context: context),
+          itemName: (theme) => theme.name.tr(context: context),
+          isItemSelected: (theme) => currentState.currentTheme.id == theme.id,
+          onBackButtonPressed: () {
+            state = state.copyWith(
+              currentPage: SettingsPage.settings.index,
+            );
+          },
+          showPreviousButton: !false,
+          onCloseButtonPressed: closeSettingsModalSheet,
+          context: context,
+        ),
+      ],
       onModalDismissedWithBarrierTap: closeSettingsModalSheet,
-      pageIndexNotifier: currentPage,
+      pageIndexNotifier: pageNotifier,
     );
   }
 
@@ -75,7 +125,14 @@ class SettingsController extends GetxController {
   }
 
   void closeSettingsModalSheet() {
-    PlayxNavigation.pop();
-    currentPage.value = SettingsPage.settings.index;
+    final ctx = NavigationUtils.navigationContext;
+    if (ctx != null && Navigator.of(ctx).canPop()) {
+      Navigator.of(ctx).pop();
+    }
+    state = state.copyWith(currentPage: SettingsPage.settings.index);
   }
 }
+
+final settingsControllerProvider = NotifierProvider<SettingsController, SettingsState>(
+  SettingsController.new,
+);

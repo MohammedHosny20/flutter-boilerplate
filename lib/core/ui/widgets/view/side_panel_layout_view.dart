@@ -9,8 +9,7 @@ class SidePanelLayoutView<T> extends StatelessWidget {
 
   // Builders
   final Widget Function(BuildContext context, T item) contentBuilder;
-  final Widget Function(BuildContext context, T item, bool selected)?
-  sideItemBuilder;
+  final Widget Function(BuildContext context, T item, bool selected)? sideItemBuilder;
 
   // Header
   final bool showSearch;
@@ -20,8 +19,7 @@ class SidePanelLayoutView<T> extends StatelessWidget {
   final Widget? endActionButton;
 
   // Optional Sidebar Widget (like stepper)
-  final Widget Function(BuildContext context, T selectedItem, List<T> items)?
-  sidebarBuilder;
+  final Widget Function(BuildContext context, T selectedItem, List<T> items)? sidebarBuilder;
 
   final List<BreadcrumbItem> breadcrumbs;
 
@@ -158,9 +156,7 @@ class SidePanelLayoutView<T> extends StatelessWidget {
                                 Icon(
                                   Icons.circle,
                                   size: 16.r,
-                                  color: isSelected
-                                      ? Colors.white
-                                      : context.colors.onSurface,
+                                  color: isSelected ? Colors.white : context.colors.onSurface,
                                 ),
                                 SizedBox(width: 8.r),
                                 Expanded(child: Text(item.toString())),

@@ -9,12 +9,11 @@
 import 'dart:typed_data';
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
+import 'package:flutter_boilerplate/app/wishlist/data/model/db/database_wishlist_item.dart';
 import 'package:objectbox/internal.dart'
     as obx_int; // generated code can access "internal" functionality
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
-
-import '../../../app/wishlist/data/model/db/database_wishlist_item.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -121,12 +120,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
         object.id = id;
       },
       objectToFB: (DatabaseWishlistItem object, fb.Builder fbb) {
-        final nameOffset = object.name == null
-            ? null
-            : fbb.writeString(object.name!);
-        final imageUrlOffset = object.imageUrl == null
-            ? null
-            : fbb.writeString(object.imageUrl!);
+        final nameOffset = object.name == null ? null : fbb.writeString(object.name!);
+        final imageUrlOffset = object.imageUrl == null ? null : fbb.writeString(object.imageUrl!);
         fbb.startTable(5);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, nameOffset);
@@ -155,9 +150,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final imageUrlParam = const fb.StringReader(
           asciiOptimization: true,
         ).vTableGetNullable(buffer, rootOffset, 8);
-        final dateParam = dateValue == null
-            ? null
-            : DateTime.fromMillisecondsSinceEpoch(dateValue);
+        final dateParam = dateValue == null ? null : DateTime.fromMillisecondsSinceEpoch(dateValue);
         final object = DatabaseWishlistItem(
           id: idParam,
           name: nameParam,

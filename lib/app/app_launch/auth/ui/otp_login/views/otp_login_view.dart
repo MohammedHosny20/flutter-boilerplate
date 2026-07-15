@@ -1,11 +1,11 @@
 part of '../imports/login_view_imports.dart';
 
 // login screen widget.
-class OtpLoginView extends GetView<OtpLoginController> {
+class OtpLoginView extends ConsumerWidget {
   const OtpLoginView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return const PlatformScaffold(
       body: SafeArea(
         child: OptimizedScrollView(

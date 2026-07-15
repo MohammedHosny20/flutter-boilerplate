@@ -1,10 +1,11 @@
 part of '../../imports/login_imports.dart';
 
-class BuildLoginTitleWidget extends GetView<LoginController> {
+class BuildLoginTitleWidget extends ConsumerWidget {
   const BuildLoginTitleWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(loginControllerProvider);
     return Row(
       children: [
         Expanded(
@@ -21,20 +22,18 @@ class BuildLoginTitleWidget extends GetView<LoginController> {
             ),
           ),
         ),
-        Obx(() {
-          if (controller.currentLoginMethod.value == LoginMethod.email) {
-            return IconButton(
-              icon: const Icon(
-                Icons.close,
-              ),
-              onPressed: () {
-                controller.currentLoginMethod.value = null;
-              },
-              color: context.colors.onSurface,
-            );
-          }
-          return const SizedBox.shrink();
-        }),
+        if (state.currentLoginMethod == LoginMethod.email)
+          IconButton(
+            icon: const Icon(
+              Icons.close,
+            ),
+            onPressed: () {
+              ref.read(loginControllerProvider.notifier).setCurrentLoginMethod(null);
+            },
+            color: context.colors.onSurface,
+          )
+        else
+          const SizedBox.shrink(),
       ],
     );
   }

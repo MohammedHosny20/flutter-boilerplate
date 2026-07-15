@@ -62,9 +62,7 @@ class ApiUserInfo {
       email: asStringOrNull(map, 'email'),
       firstName: asStringOrNull(json, 'firstName'),
       lastName: asStringOrNull(json, 'lastName'),
-      image: (json['image'] == null
-          ? image
-          : MediaItem.fromJson(asMap(json, 'image'))),
+      image: (json['image'] == null ? image : MediaItem.fromJson(asMap(json, 'image'))),
       provider: asStringOrNull(map, 'provider'),
       createdAt: asStringOrNull(map, 'createdAt'),
       updatedAt: asStringOrNull(map, 'updatedAt'),

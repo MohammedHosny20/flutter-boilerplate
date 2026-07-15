@@ -1,10 +1,12 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterTermsWidget extends GetView<RegisterController> {
+class BuildRegisterTermsWidget extends ConsumerWidget {
   const BuildRegisterTermsWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(registerControllerProvider);
+    final controller = ref.read(registerControllerProvider.notifier);
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 12.r,
@@ -16,18 +18,16 @@ class BuildRegisterTermsWidget extends GetView<RegisterController> {
           SizedBox(
             height: 24.r,
             width: 24.r,
-            child: Obx(() {
-              return Checkbox(
-                value: controller.agreeToTerms.value,
-                onChanged: (value) {
-                  controller.agreeToTerms.value = value ?? false;
-                },
-                activeColor: context.colors.onSurface,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(4.r),
-                ),
-              );
-            }),
+            child: Checkbox(
+              value: state.agreeToTerms,
+              onChanged: (value) {
+                controller.setAgreeToTerms(value ?? false);
+              },
+              activeColor: context.colors.onSurface,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(4.r),
+              ),
+            ),
           ),
           SizedBox(width: 4.r),
           CustomText(

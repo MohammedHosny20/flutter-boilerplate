@@ -1,16 +1,16 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterHaveAccountWidget extends GetView<RegisterController> {
+class BuildRegisterHaveAccountWidget extends ConsumerWidget {
   const BuildRegisterHaveAccountWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: EdgeInsets.symmetric(
         vertical: 5.h,
       ),
       child: InkWell(
-        onTap: controller.navigateToLogin,
+        onTap: ref.read(registerControllerProvider.notifier).navigateToLogin,
         child: RichText(
           text: TextSpan(
             text: AppTrans.haveAccountText.tr(context: context),

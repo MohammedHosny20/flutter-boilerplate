@@ -12,11 +12,11 @@ import 'package:flutter_boilerplate/app/app_launch/app/ui/imports/app_imports.da
 import 'package:flutter_boilerplate/core/models/models.dart';
 import 'package:flutter_boilerplate/core/navigation/navigation.dart';
 import 'package:flutter_boilerplate/core/ui/resources/assets/animations.dart';
-import 'package:flutter_boilerplate/core/ui/resources/assets/images.dart'
-    as asset;
+import 'package:flutter_boilerplate/core/ui/resources/assets/images.dart' as asset;
 import 'package:flutter_boilerplate/core/ui/resources/style/app_text_style.dart';
 import 'package:flutter_boilerplate/core/ui/widgets/responsive/responsive_navigation_config.dart';
 import 'package:flutter_boilerplate/core/utils/app_utils.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:grouped_list/sliver_grouped_list.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';

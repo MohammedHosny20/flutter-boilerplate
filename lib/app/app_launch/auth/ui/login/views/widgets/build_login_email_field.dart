@@ -1,15 +1,13 @@
 part of '../../imports/login_imports.dart';
 
-class BuildLoginEmailFieldWidget extends GetView<LoginController> {
+class BuildLoginEmailFieldWidget extends ConsumerWidget {
   const BuildLoginEmailFieldWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = ref.read(loginControllerProvider.notifier);
     return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: 10.r,
-        vertical: 5.r,
-      ),
+      padding: EdgeInsets.symmetric(horizontal: 10.r, vertical: 5.r),
       child: CustomTextField(
         label: AppTrans.emailOrUsernameLabel.tr(context: context),
         hint: AppTrans.emailHint.tr(context: context),
@@ -28,7 +26,7 @@ class BuildLoginEmailFieldWidget extends GetView<LoginController> {
         ),
         shouldAutoValidate: true,
         onValidationChanged: (isValid) {
-          controller.isEmailValid.value = isValid;
+          controller.setEmailValid(isValid);
         },
         textInputAction: TextInputAction.next,
       ),

@@ -3,61 +3,82 @@ part of '../navigation.dart';
 /// This class is responsible for handling the app navigation.
 /// for each navigation from screen to another add it here.
 abstract class AppNavigation {
-  AppNavigation._();
+  const AppNavigation._();
+
+  static GoRouter get _router => AppPages.router;
 
   static void navigateFormSplashToHome() {
-    PlayxNavigation.offAllNamed(AppPages.homeRoute);
+    _router.goNamed(AppPages.homeRoute);
   }
 
   static void navigateToHome() {
-    PlayxNavigation.offAllNamed(AppPages.homeRoute);
+    _router.goNamed(AppPages.homeRoute);
   }
 
   static void navigateFormSplashToLogin() {
-    PlayxNavigation.offAllNamed(Routes.login);
+    _router.goNamed(Routes.login);
   }
 
   static void navigateFromLoginToRegister() {
-    PlayxNavigation.toNamed(Routes.register);
+    _router.pushNamed(Routes.register);
   }
 
   static void navigateFromLoginToHome() {
-    PlayxNavigation.offAllNamed(AppPages.homeRoute);
+    _router.goNamed(AppPages.homeRoute);
   }
 
   static void navigateFromRegisterToLogin() {
-    PlayxNavigation.offAllNamed(Routes.login);
+    _router.goNamed(Routes.login);
   }
 
   static void navigateFromRegisterToHome() {
-    PlayxNavigation.offAllNamed(AppPages.homeRoute);
+    _router.goNamed(AppPages.homeRoute);
   }
 
   static void navigateToSplash() {
-    PlayxNavigation.offAllNamed(Routes.splash);
+    _router.goNamed(Routes.splash);
   }
 
   static void navigateFromSplashToOnBoarding() {
-    PlayxNavigation.offAllNamed(Routes.onboarding);
+    _router.goNamed(Routes.onboarding);
   }
 
   static void navigateFromOnBoardingToLogin() {
-    PlayxNavigation.offAllNamed(Routes.login);
+    _router.goNamed(Routes.login);
   }
 
   static void navigateFromVerifyOtpToHome() {
-    PlayxNavigation.offAllNamed(AppPages.homeRoute);
+    _router.goNamed(AppPages.homeRoute);
   }
 
   static void navigateFromLoginToVerifyPhone() {
-    PlayxNavigation.toNamed(Routes.verifyPhone);
+    _router.pushNamed(Routes.verifyPhone);
+  }
+
+  static void navigateToOtpLogin() {
+    _router.pushNamed(Routes.otpLogin);
+  }
+
+  static void navigateFromOtpLoginToVerifyPhone() {
+    _router.pushNamed(Routes.verifyPhone);
+  }
+
+  static void navigateToCountryDetails({required String code}) {
+    _router.pushNamed(
+      Routes.countryDetails,
+      pathParameters: {'code': code},
+    );
   }
 
   static void navigateFromSettingsToLogin() {
-    PlayxNavigation.offAllNamed(Routes.login);
+    _router.goNamed(Routes.login);
   }
 
   static void navigateToLogin() {
-    PlayxNavigation.offAllNamed(Routes.login);
+    _router.goNamed(Routes.login);
+  }
+
+  static void navigateToCountries() {
+    _router.pushNamed(Routes.countries);
   }
 }

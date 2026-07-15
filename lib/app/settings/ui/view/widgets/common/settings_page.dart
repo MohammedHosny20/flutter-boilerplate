@@ -64,67 +64,65 @@ class _BuildSettingsPageState<T> extends State<BuildSettingsPage<T>> {
                 (item) => InkWell(
                   onTap: () => widget.onItemSelected(item),
                   borderRadius: BorderRadius.circular(8.r),
-                  child: Obx(() {
-                    return CustomCard(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.r),
-                        side: widget.isItemSelected(item)
-                            ? BorderSide(
-                                color: context.colors.primary,
-                                width: 2,
-                              )
-                            : BorderSide.none,
+                  child: CustomCard(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.r),
+                      side: widget.isItemSelected(item)
+                          ? BorderSide(
+                              color: context.colors.primary,
+                              width: 2,
+                            )
+                          : BorderSide.none,
+                    ),
+                    isChild: true,
+                    elevation: context.isDark ? 12 : 0,
+                    child: ListTile(
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 6.w,
+                        vertical: 4.h,
                       ),
-                      isChild: true,
-                      elevation: context.isDark ? 12 : 0,
-                      child: ListTile(
-                        contentPadding: EdgeInsets.symmetric(
-                          horizontal: 6.w,
-                          vertical: 4.h,
+                      trailing: widget.isItemSelected(item)
+                          ? Icon(
+                              Icons.check,
+                              color: context.colors.primary,
+                              size: 20.r,
+                            )
+                          : null,
+                      leading: widget.itemIcon != null
+                          ? Container(
+                              width: 36.w,
+                              height: 36.h,
+                              padding: EdgeInsets.symmetric(horizontal: 6.w),
+                              alignment: Alignment.center,
+                              child: ImageViewer.svgAsset(
+                                widget.itemIcon!(item),
+                              ),
+                            )
+                          : widget.itemIconWidget != null
+                          ? Container(
+                              width: 36.w,
+                              height: 36.h,
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 6.w,
+                              ),
+                              alignment: Alignment.center,
+                              child: widget.itemIconWidget!(item),
+                            )
+                          : null,
+                      title: Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 8.r,
+                          vertical: 4.r,
                         ),
-                        trailing: widget.isItemSelected(item)
-                            ? Icon(
-                                Icons.check,
-                                color: context.colors.primary,
-                                size: 20.r,
-                              )
-                            : null,
-                        leading: widget.itemIcon != null
-                            ? Container(
-                                width: 36.w,
-                                height: 36.h,
-                                padding: EdgeInsets.symmetric(horizontal: 6.w),
-                                alignment: Alignment.center,
-                                child: ImageViewer.svgAsset(
-                                  widget.itemIcon!(item),
-                                ),
-                              )
-                            : widget.itemIconWidget != null
-                            ? Container(
-                                width: 36.w,
-                                height: 36.h,
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: 6.w,
-                                ),
-                                alignment: Alignment.center,
-                                child: widget.itemIconWidget!(item),
-                              )
-                            : null,
-                        title: Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 8.r,
-                            vertical: 4.r,
-                          ),
-                          child: CustomText(
-                            widget.itemName(item),
-                            color: context.colors.primary,
-                            fontSize: 15.sp,
-                            font: fontFamilyBasedOnText(widget.itemName(item)),
-                          ),
+                        child: CustomText(
+                          widget.itemName(item),
+                          color: context.colors.primary,
+                          fontSize: 15.sp,
+                          font: fontFamilyBasedOnText(widget.itemName(item)),
                         ),
                       ),
-                    );
-                  }),
+                    ),
+                  ),
                 ),
               )
               .toList(),

@@ -25,13 +25,12 @@ class ApiHelper {
     auth0Web: ApiClient.auth0Web,
   );
 
-  static NetworkResult<T> unableToProcessError<T>() =>
-      const NetworkResult.error(
-        UnableToProcessException(
-          errorMessage: AppTrans.unableToProcess,
-          statusCode: 400,
-        ),
-      );
+  static NetworkResult<T> unableToProcessError<T>() => const NetworkResult.error(
+    UnableToProcessException(
+      errorMessage: AppTrans.unableToProcess,
+      statusCode: 400,
+    ),
+  );
 
   Future<bool> isLoggedIn({bool checkAuth0 = true}) async {
     try {
@@ -59,8 +58,7 @@ class ApiHelper {
 
     final loginMethod = await _preferenceManger.loginMethod;
 
-    final logOutFromAuth0 =
-        loginMethod != null && loginMethod != LoginMethod.email;
+    final logOutFromAuth0 = loginMethod != null && loginMethod != LoginMethod.email;
 
     if (logOutFromAuth0) {
       try {

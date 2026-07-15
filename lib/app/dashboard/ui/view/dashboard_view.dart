@@ -1,12 +1,17 @@
 part of '../imports/dashboard_imports.dart';
 
-class DashboardView extends GetView<DashboardController> {
+class DashboardView extends ConsumerWidget {
+  const DashboardView({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(dashboardControllerProvider);
+    final controller = ref.read(dashboardControllerProvider.notifier);
+
     return CustomScaffold(
       title: AppTrans.dashboard,
-      child: RxDataStateWidget(
-        rxData: controller.dataState,
+      child: DataStateWidget(
+        data: state.dataState,
         onSuccess: (items) => ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, index) {
@@ -60,8 +65,8 @@ class DashboardView extends GetView<DashboardController> {
                           mini: true,
                           onPressed: null,
                           heroTag: null,
-                          backgroundColor: context.colors.surface.withOpacity(
-                            .85,
+                          backgroundColor: context.colors.surface.withValues(
+                            alpha: .85,
                           ),
                           child: FavoriteButton(
                             isInFavorite: item.isFavorite,

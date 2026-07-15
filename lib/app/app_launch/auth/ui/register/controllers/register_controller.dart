@@ -1,16 +1,58 @@
 part of '../imports/register_imports.dart';
 
-class RegisterController extends GetxController {
-  final AuthRepository authRepository;
+class RegisterState {
+  final bool hidePassword;
+  final bool hideConfirmPassword;
+  final bool agreeToTerms;
+  final bool isFirstNameValid;
+  final bool isLastNameValid;
+  final bool isEmailValid;
+  final bool isPasswordValid;
+  final bool isConfirmPasswordValid;
+  final bool isFormValid;
+  final LoginMethod? currentLoginMethod;
 
-  RegisterController({
-    required this.authRepository,
+  RegisterState({
+    this.hidePassword = true,
+    this.hideConfirmPassword = true,
+    this.agreeToTerms = true,
+    this.isFirstNameValid = false,
+    this.isLastNameValid = false,
+    this.isEmailValid = false,
+    this.isPasswordValid = false,
+    this.isConfirmPasswordValid = false,
+    this.isFormValid = false,
+    this.currentLoginMethod,
   });
 
-  final hidePassword = true.obs;
-  final hideConfirmPassword = true.obs;
-  final agreeToTerms = true.obs;
+  RegisterState copyWith({
+    bool? hidePassword,
+    bool? hideConfirmPassword,
+    bool? agreeToTerms,
+    bool? isFirstNameValid,
+    bool? isLastNameValid,
+    bool? isEmailValid,
+    bool? isPasswordValid,
+    bool? isConfirmPasswordValid,
+    bool? isFormValid,
+    LoginMethod? currentLoginMethod,
+  }) {
+    return RegisterState(
+      hidePassword: hidePassword ?? this.hidePassword,
+      hideConfirmPassword: hideConfirmPassword ?? this.hideConfirmPassword,
+      agreeToTerms: agreeToTerms ?? this.agreeToTerms,
+      isFirstNameValid: isFirstNameValid ?? this.isFirstNameValid,
+      isLastNameValid: isLastNameValid ?? this.isLastNameValid,
+      isEmailValid: isEmailValid ?? this.isEmailValid,
+      isPasswordValid: isPasswordValid ?? this.isPasswordValid,
+      isConfirmPasswordValid: isConfirmPasswordValid ?? this.isConfirmPasswordValid,
+      isFormValid: isFormValid ?? this.isFormValid,
+      currentLoginMethod: currentLoginMethod ?? this.currentLoginMethod,
+    );
+  }
+}
 
+class RegisterController extends Notifier<RegisterState> {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
   final emailController = TextEditingController();
@@ -28,67 +70,72 @@ class RegisterController extends GetxController {
 
   final confirmPasswordFormKey = GlobalKey<FormState>();
 
-  final isFirstNameValid = false.obs;
-  final isLastNameValid = false.obs;
-  final isEmailValid = false.obs;
-  final isPasswordValid = false.obs;
-  final isConfirmPasswordValid = false.obs;
-
-  final isFormValid = false.obs;
-
-  final Rxn<LoginMethod> currentLoginMethod = Rxn();
   final loginMethods = <LoginMethod>[
     LoginMethod.email,
     LoginMethod.google,
     LoginMethod.apple,
   ];
 
-  Worker? _validationWorker;
   @override
-  void onInit() {
-    super.onInit();
-    listenToValidationState();
+  RegisterState build() {
+    return RegisterState();
   }
 
-  void listenToValidationState() {
-    _validationWorker = everAll(
-      [
-        agreeToTerms,
-        isFirstNameValid,
-        isLastNameValid,
-        isEmailValid,
-        isPasswordValid,
-        isConfirmPasswordValid,
-      ],
-      (callback) {
-        final isValid =
-            agreeToTerms.value &&
-            isFirstNameValid.value &&
-            isLastNameValid.value &&
-            isEmailValid.value &&
-            isPasswordValid.value &&
-            isConfirmPasswordValid.value;
-        isFormValid.value = isValid;
-      },
-    );
+  void _updateFormValidity() {
+    final isValid =
+        state.agreeToTerms &&
+        state.isFirstNameValid &&
+        state.isLastNameValid &&
+        state.isEmailValid &&
+        state.isPasswordValid &&
+        state.isConfirmPasswordValid;
+    state = state.copyWith(isFormValid: isValid);
+  }
+
+  void setFirstNameValid(bool value) {
+    state = state.copyWith(isFirstNameValid: value);
+    _updateFormValidity();
+  }
+
+  void setLastNameValid(bool value) {
+    state = state.copyWith(isLastNameValid: value);
+    _updateFormValidity();
+  }
+
+  void setEmailValid(bool value) {
+    state = state.copyWith(isEmailValid: value);
+    _updateFormValidity();
+  }
+
+  void setPasswordValid(bool value) {
+    state = state.copyWith(isPasswordValid: value);
+    _updateFormValidity();
+  }
+
+  void setConfirmPasswordValid(bool value) {
+    state = state.copyWith(isConfirmPasswordValid: value);
+    _updateFormValidity();
+  }
+
+  void setAgreeToTerms(bool value) {
+    state = state.copyWith(agreeToTerms: value);
+    _updateFormValidity();
   }
 
   Future<void> registerBy({required LoginMethod method}) async {
-    currentLoginMethod.value = method;
     if (method == LoginMethod.email) {
-      currentLoginMethod.value = LoginMethod.email;
+      state = state.copyWith(currentLoginMethod: LoginMethod.email);
     } else {
-      AppController.instance.loadingStatus.value =
-          const LoadingStatus.register();
-      currentLoginMethod.value = null;
-      final result = await authRepository.loginViaAuth0(method: method);
+      ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.register();
+      state = state.copyWith();
+      final authRepo = await ref.read(authRepositoryProvider.future);
+      final result = await authRepo.loginViaAuth0(method: method);
       result.when(
         success: (User user) async {
           _navigateToHome();
         },
         error: (NetworkException exception) {
-          AppController.instance.loadingStatus.value =
-              const LoadingStatus.idle();
+          ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.idle();
           Alert.error(message: exception.message);
         },
       );
@@ -96,10 +143,11 @@ class RegisterController extends GetxController {
   }
 
   Future<void> register() async {
-    if (!isFormValid.value) return;
-    AppController.instance.loadingStatus.value = const LoadingStatus.register();
+    if (!state.isFormValid) return;
+    ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.register();
 
-    final result = await authRepository.register(
+    final authRepo = await ref.read(authRepositoryProvider.future);
+    final result = await authRepo.register(
       firstName: firstNameController.text,
       lastName: lastNameController.text,
       email: emailController.text,
@@ -111,37 +159,33 @@ class RegisterController extends GetxController {
       },
       error: (NetworkException exception) {
         Alert.error(message: exception.message);
-        AppController.instance.loadingStatus.value = const LoadingStatus.idle();
+        ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.idle();
       },
     );
   }
 
   Future<void> _navigateToHome() async {
-    AppController.instance.loadingStatus.value = const LoadingStatus.idle();
+    ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.idle();
     AppNavigation.navigateFromRegisterToHome();
   }
 
   void changeHidePasswordState() {
-    hidePassword.value = !hidePassword.value;
+    state = state.copyWith(hidePassword: !state.hidePassword);
   }
 
   void changeHideConfirmPasswordState() {
-    hideConfirmPassword.value = !hideConfirmPassword.value;
+    state = state.copyWith(hideConfirmPassword: !state.hideConfirmPassword);
+  }
+
+  void setCurrentLoginMethod(LoginMethod? method) {
+    state = state.copyWith(currentLoginMethod: method);
   }
 
   void navigateToLogin() {
     AppNavigation.navigateFromRegisterToLogin();
   }
-
-  @override
-  void onClose() {
-    emailController.dispose();
-    passwordController.dispose();
-    confirmPasswordController.dispose();
-    firstNameController.dispose();
-    lastNameController.dispose();
-    _validationWorker?.dispose();
-    _validationWorker = null;
-    super.onClose();
-  }
 }
+
+final registerControllerProvider = NotifierProvider<RegisterController, RegisterState>(
+  RegisterController.new,
+);

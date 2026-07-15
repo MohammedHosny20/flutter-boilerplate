@@ -28,15 +28,12 @@ class AppLocaleConfig {
   );
 }
 
-String get currentLanguageCode =>
-    PlayxLocalization.currentLocale.toStringWithSeparator();
+String get currentLanguageCode => PlayxLocalization.currentLocale.toStringWithSeparator();
 
 String fontFamily({BuildContext? context}) {
   try {
     final locale = context?.locale ?? PlayxLocalization.currentLocale;
-    return locale.isArabic
-        ? AppLocaleConfig.arabicFontFamily
-        : AppLocaleConfig.englishFontFamily;
+    return locale.isArabic ? AppLocaleConfig.arabicFontFamily : AppLocaleConfig.englishFontFamily;
   }
   // ignore: avoid_catches_without_on_clauses
   catch (e) {

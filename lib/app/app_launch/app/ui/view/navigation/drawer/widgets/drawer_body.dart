@@ -1,6 +1,6 @@
 part of '../../../../imports/app_imports.dart';
 
-class CustomDrawerBody extends StatelessWidget {
+class CustomDrawerBody extends ConsumerWidget {
   final StatefulNavigationShell navigationShell;
   final bool isExpanded;
 
@@ -10,10 +10,10 @@ class CustomDrawerBody extends StatelessWidget {
     this.isExpanded = true,
   });
 
-  AppController get controller => AppController.instance;
-
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(appControllerProvider);
+    final controller = ref.read(appControllerProvider.notifier);
     return SafeArea(
       left: context.isLtr,
       right: context.isRtl,
@@ -34,9 +34,7 @@ class CustomDrawerBody extends StatelessWidget {
             ),
             alignment: Alignment.center,
             child: ImageViewer.svgAsset(
-              isExpanded
-                  ? Assets.logos.getHorizontalLogo(context.isDarkMode)
-                  : Assets.logos.logo,
+              isExpanded ? Assets.logos.getHorizontalLogo(context.isDarkMode) : Assets.logos.logo,
               height: isExpanded ? context.height * .05 : 28.r,
               color: context.isDarkMode ? Colors.white : null,
             ),
@@ -46,72 +44,64 @@ class CustomDrawerBody extends StatelessWidget {
 
           // Scrollable drawer items
           Expanded(
-            child: Obx(() {
-              final mainItems = controller.mainDrawerItems.toList();
-              // final moduleItems = controller.moduleDrawerItems.toList();
+            child: CustomScrollView(
+              physics: const BouncingScrollPhysics(),
+              slivers: [
+                // if (mainItems.isNotEmpty)
+                //   _buildSectionHeader(context, AppTrans.mainModulesLabel),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final item = state.mainDrawerItems[index];
 
-              return CustomScrollView(
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  // if (mainItems.isNotEmpty)
-                  //   _buildSectionHeader(context, AppTrans.mainModulesLabel),
-                  SliverList(
-                    delegate: SliverChildBuilderDelegate((context, index) {
-                      final item = mainItems[index];
-
-                      return BuildDrawerItemWidget(
-                        item: item,
-                        isExpanded: isExpanded,
-                        isSelected:
-                            navigationShell.currentIndex ==
-                            item.navigationIndex,
-                        onTap: () {
-                          controller.handleDrawerMainItemClicked(
-                            index: item.navigationIndex ?? index,
-                            navigationShell: navigationShell,
-                          );
-                          HapticFeedback.selectionClick();
-                        },
-                      );
-                    }, childCount: mainItems.length),
-                  ),
-                  if (isExpanded)
-                    SliverToBoxAdapter(child: SizedBox(height: 12.r)),
-                  // if (moduleItems.isNotEmpty) ...[
-                  //   if (isExpanded)
-                  //     _buildSectionHeader(context, AppTrans.activeModulesTitle)
-                  //   else
-                  //     SliverToBoxAdapter(
-                  //       child: Padding(
-                  //         padding: EdgeInsets.symmetric(horizontal: 12.0.r),
-                  //         child: Divider(color: context.colors.onSurface),
-                  //       ),
-                  //     ),
-                  //   SliverList(
-                  //     delegate: SliverChildBuilderDelegate((context, index) {
-                  //       final item = moduleItems[index];
-                  //
-                  //       return BuildDrawerItemWidget(
-                  //         item: item,
-                  //         isExpanded: isExpanded,
-                  //         isSelected: item.navigationIndex ==
-                  //             navigationShell.currentIndex,
-                  //         onTap: () {
-                  //           controller.handleDrawerModuleItemClicked(
-                  //             item: item,
-                  //             navigationShell: navigationShell,
-                  //             index: index,
-                  //           );
-                  //           HapticFeedback.selectionClick();
-                  //         },
-                  //       );
-                  //     }, childCount: moduleItems.length),
-                  //   ),
-                  // ],
-                  SliverToBoxAdapter(child: SizedBox(height: 20.r)),
-                ],
-              );
-            }),
+                    return BuildDrawerItemWidget(
+                      item: item,
+                      isExpanded: isExpanded,
+                      isSelected: navigationShell.currentIndex == item.navigationIndex,
+                      onTap: () {
+                        controller.handleDrawerMainItemClicked(
+                          index: item.navigationIndex ?? index,
+                          navigationShell: navigationShell,
+                        );
+                        HapticFeedback.selectionClick();
+                      },
+                    );
+                  }, childCount: state.mainDrawerItems.length),
+                ),
+                if (isExpanded) SliverToBoxAdapter(child: SizedBox(height: 12.r)),
+                // if (moduleItems.isNotEmpty) ...[
+                //   if (isExpanded)
+                //     _buildSectionHeader(context, AppTrans.activeModulesTitle)
+                //   else
+                //     SliverToBoxAdapter(
+                //       child: Padding(
+                //         padding: EdgeInsets.symmetric(horizontal: 12.0.r),
+                //         child: Divider(color: context.colors.onSurface),
+                //       ),
+                //     ),
+                //   SliverList(
+                //     delegate: SliverChildBuilderDelegate((context, index) {
+                //       final item = moduleItems[index];
+                //
+                //       return BuildDrawerItemWidget(
+                //         item: item,
+                //         isExpanded: isExpanded,
+                //         isSelected: item.navigationIndex ==
+                //             navigationShell.currentIndex,
+                //         onTap: () {
+                //           controller.handleDrawerModuleItemClicked(
+                //             item: item,
+                //             navigationShell: navigationShell,
+                //             index: index,
+                //           );
+                //           HapticFeedback.selectionClick();
+                //         },
+                //       );
+                //     }, childCount: moduleItems.length),
+                //   ),
+                // ],
+                SliverToBoxAdapter(child: SizedBox(height: 20.r)),
+              ],
+            ),
           ),
 
           Divider(
@@ -127,35 +117,30 @@ class CustomDrawerBody extends StatelessWidget {
           //   isShowLabel: true,
           //   isExpanded: isExpanded,
           // ),
+          Column(
+            children: List.generate(state.otherDrawerItems.length, (index) {
+              final item = state.otherDrawerItems[index];
 
-          // Column(
-          //   children: List.generate(controller.otherDrawerItems.length, (
-          //     index,
-          //   ) {
-          //     final item = controller.otherDrawerItems[index];
-          //
-          //     return BuildDrawerItemWidget(
-          //       item: item,
-          //       isExpanded: isExpanded,
-          //       onTap: () {
-          //         controller.handleDrawerOtherItemClicked(
-          //           index: index,
-          //           context: context,
-          //         );
-          //         index == 1
-          //             ? HapticFeedback.heavyImpact()
-          //             : HapticFeedback.selectionClick();
-          //       },
-          //     );
-          //   }),
-          // ),
+              return BuildDrawerItemWidget(
+                item: item,
+                isExpanded: isExpanded,
+                onTap: () {
+                  controller.handleDrawerOtherItemClicked(
+                    index: index,
+                    context: context,
+                  );
+                  index == 1 ? HapticFeedback.heavyImpact() : HapticFeedback.selectionClick();
+                },
+              );
+            }),
+          ),
           // _buildUserProfileSection(context, isExpanded),
           if (isExpanded)
             Container(
               padding: EdgeInsets.all(isExpanded ? 8.r : 2.r),
               alignment: Alignment.center,
               child: AppVersion(
-                showVersionCode: controller.showVersionCode.value,
+                showVersionCode: state.showVersionCode,
                 fontSize: isExpanded ? 12.sp : 9.sp,
                 textStyle: TextStyle(
                   color: Colors.black.withValues(alpha: 0.5),
@@ -167,24 +152,19 @@ class CustomDrawerBody extends StatelessWidget {
     );
   }
 
-  Widget _buildUserProfileSection(BuildContext context, bool extended) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.0.r),
-      child: Obx(() {
-        final user = AppController.instance.currentUser.value;
-        final name = user
-            ?.getFullName(fallbackAsEmail: false)
-            ?.capitalizeFirstCharForEachWord;
-        final email = user?.email;
+  Widget _buildUserProfileSection(BuildContext context, WidgetRef ref, bool extended) {
+    final state = ref.watch(appControllerProvider);
+    final controller = ref.read(appControllerProvider.notifier);
+    final user = state.currentUser;
+    final name = user?.getFullName(fallbackAsEmail: false)?.capitalizeFirstCharForEachWord;
+    final email = user?.email;
 
-        return GestureDetector(
-          onTap: () => controller.onUserProfileTap(
-            context: context,
-            user: user,
-          ),
-          child: _buildUserProfile(context, extended, name: name, email: email),
-        );
-      }),
+    return GestureDetector(
+      onTap: () => controller.onUserProfileTap(
+        context: context,
+        user: user,
+      ),
+      child: _buildUserProfile(context, extended, name: name, email: email),
     );
   }
 

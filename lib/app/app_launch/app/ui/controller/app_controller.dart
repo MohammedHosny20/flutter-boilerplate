@@ -1,75 +1,56 @@
 part of '../imports/app_imports.dart';
 
-class AppController extends SuperController {
-  final AuthRepository _authRepository;
-  final AppRepository _repository;
-  AppController({
-    required AuthRepository authRepository,
-    AppRepository? repository,
-  }) : _authRepository = authRepository,
-       _repository = repository ?? AppRepository.instance;
-
-  static AppController get instance => getIt.get<AppController>();
-
-  final isDrawerExpanded = true.obs;
+class AppController extends Notifier<AppState> {
+  late final AppRepository _repository;
 
   final loadingStatus = Rx(const LoadingStatus.idle());
 
   final AdvancedDrawerController drawerController = AdvancedDrawerController();
 
-  final RxBool disableDrawerGestures = true.obs;
-
-  final RxInt currentDrawerIndex = RxInt(0);
-  final RxInt currentModuleDrawerIndex = RxInt(0);
-
-  final RxBool showVersionCode = RxBool(false);
-  late final mainDrawerItems = RxList<CustomNavigationDestinationItem>.from(
-    _repository.mainDrawerItems,
-  );
-
-  late final moduleDrawerItems = RxList<CustomNavigationDestinationItem>();
-  late final otherDrawerItems = _repository.otherDrawerItems;
-
-  final Rxn<UserInfo> currentUser = Rxn<UserInfo>();
-
   Completer<void> appInitializationCompleter = Completer<void>();
   int currentBottomNavIndex = 0;
 
-  final showBottomNav = true.obs;
-
-  late final List<CustomNavigationDestinationItem> bottomNavItems = [
-    CustomNavigationDestinationItem(
-      icon: IconInfo(
-        icon: Icons.home_outlined,
-      ),
-      label: AppTrans.home,
-      navigationIndex: 0,
-    ),
-    CustomNavigationDestinationItem(
-      icon: IconInfo(
-        icon: Icons.favorite_border,
-      ),
-      label: AppTrans.wishlist,
-      navigationIndex: 1,
-    ),
-    CustomNavigationDestinationItem(
-      icon: IconInfo(
-        icon: Icons.settings,
-      ),
-      label: AppTrans.settings,
-      navigationIndex: 2,
-    ),
-  ];
   @override
-  void onInit() {
-    super.onInit();
-    setupSettings();
-    updateCurrentUser();
+  AppState build() {
+    _repository = ref.read(appRepositoryProvider);
+    Future.microtask(() => _init());
+    return AppState(
+      mainDrawerItems: _repository.mainDrawerItems,
+      otherDrawerItems: _repository.otherDrawerItems,
+      bottomNavItems: [
+        CustomNavigationDestinationItem(
+          icon: IconInfo(icon: Icons.home_outlined),
+          label: AppTrans.home,
+          navigationIndex: 0,
+        ),
+        CustomNavigationDestinationItem(
+          icon: IconInfo(icon: Icons.favorite_border),
+          label: AppTrans.wishlist,
+          navigationIndex: 1,
+        ),
+        CustomNavigationDestinationItem(
+          icon: IconInfo(icon: Icons.public),
+          label: AppTrans.countries,
+          navigationIndex: 2,
+        ),
+        CustomNavigationDestinationItem(
+          icon: IconInfo(icon: Icons.settings),
+          label: AppTrans.settings,
+          navigationIndex: 3,
+        ),
+      ],
+    );
+  }
+
+  Future<void> _init() async {
+    await setupSettings();
+    await updateCurrentUser();
   }
 
   Future<void> setupSettings() async {
     try {
-      showVersionCode.value = await EnvManger.instance.showVersionCode;
+      final showVersion = await EnvManger.instance.showVersionCode;
+      state = state.copyWith(showVersionCode: showVersion);
       if (!appInitializationCompleter.isCompleted) {
         appInitializationCompleter.complete();
       }
@@ -79,18 +60,17 @@ class AppController extends SuperController {
   }
 
   Future<void> updateCurrentUser({UserInfo? user}) async {
-    final currentUser =
-        user ?? await MyPreferenceManger.instance.getSavedUser();
-    if (currentUser != null) {
-      this.currentUser.value = currentUser;
+    final savedUser = user ?? await MyPreferenceManger.instance.getSavedUser();
+    if (savedUser != null) {
+      state = state.copyWith(currentUser: savedUser);
     }
   }
 
   Future<UserInfo?> getCurrentUser() async {
-    if (currentUser.value == null) {
+    if (state.currentUser == null) {
       await updateCurrentUser();
     }
-    return currentUser.value;
+    return state.currentUser;
   }
 
   Future<void> logout({
@@ -127,7 +107,9 @@ class AppController extends SuperController {
       Sentry.captureException(e, stackTrace: s);
     }
 
-    currentUser.value = null;
+    state = state.copyWith(
+      forceUpdateCurrentUser: true,
+    );
     if (shouldNavigateToLogin) {
       // final loginType = await getLoginViewType();
       loadingStatus.value = const LoadingStatus.idle();
@@ -146,27 +128,12 @@ class AppController extends SuperController {
   //       : LoginViewType.login;
   // }
 
-  @override
-  void onDetached() {}
-
-  @override
-  void onInactive() {}
-
-  @override
-  void onPaused() {}
-
-  @override
-  void onResumed() {}
-
-  @override
-  void onHidden() {}
-
   Future<void> handleDrawerMainItemClicked({
     required int index,
     required StatefulNavigationShell navigationShell,
   }) async {
-    if (index == currentDrawerIndex.value) return;
-    currentDrawerIndex.value = index;
+    if (index == state.currentDrawerIndex) return;
+    state = state.copyWith(currentDrawerIndex: index);
     PlayxNavigation.goToBranch(
       index: index,
       navigationShell: navigationShell,
@@ -254,8 +221,10 @@ class AppController extends SuperController {
     required StatefulNavigationShell navigationShell,
     required CustomNavigationDestinationItem item,
   }) {
-    if (item.navigationIndex == currentDrawerIndex.value) return;
-    currentDrawerIndex.value = mainDrawerItems.length + index;
+    if (item.navigationIndex == state.currentDrawerIndex) return;
+    state = state.copyWith(
+      currentDrawerIndex: state.mainDrawerItems.length + index,
+    );
     PlayxNavigation.goToBranch(
       index: item.navigationIndex ?? index,
       navigationShell: navigationShell,
@@ -267,7 +236,7 @@ class AppController extends SuperController {
   }
 
   void updateBottomNavIndex(int index) {
-    if (index < 3) {
+    if (index < state.bottomNavItems.length) {
       currentBottomNavIndex = index;
     } else if (index < 0) {
       currentBottomNavIndex = 0;
@@ -285,8 +254,8 @@ class AppController extends SuperController {
     required BuildContext context,
     UserInfo? user,
   }) async {
-    final userName = (user?.getFullName(fallbackAsEmail: false) ?? "")
-        .capitalizeFirstCharForEachWord;
+    final userName =
+        (user?.getFullName(fallbackAsEmail: false) ?? "").capitalizeFirstCharForEachWord;
     final isDark = context.isDarkMode;
 
     // Helper widget to ensure Header looks identical in both styles
@@ -505,8 +474,7 @@ class AppController extends SuperController {
       final double verticalOffset = 4.r; // distance below the widget
 
       // Horizontal placement
-      final double spaceToRight =
-          screenSize.width - (position.dx + size.width) - sideMargin;
+      final double spaceToRight = screenSize.width - (position.dx + size.width) - sideMargin;
       final double spaceToLeft = position.dx - sideMargin;
 
       double left;
@@ -684,8 +652,64 @@ class AppController extends SuperController {
       );
     }
   }
+}
 
-  void registerInstance() {
-    getIt.registerSingleton(this);
+/// State held by [AppController].
+class AppState {
+  final bool isDrawerExpanded;
+  final bool disableDrawerGestures;
+  final int currentDrawerIndex;
+  final int currentModuleDrawerIndex;
+  final bool showVersionCode;
+  final UserInfo? currentUser;
+  final bool showBottomNav;
+  final List<CustomNavigationDestinationItem> mainDrawerItems;
+  final List<CustomNavigationDestinationItem> moduleDrawerItems;
+  final List<CustomNavigationDestinationItem> otherDrawerItems;
+  final List<CustomNavigationDestinationItem> bottomNavItems;
+
+  const AppState({
+    this.isDrawerExpanded = true,
+    this.disableDrawerGestures = true,
+    this.currentDrawerIndex = 0,
+    this.currentModuleDrawerIndex = 0,
+    this.showVersionCode = false,
+    this.currentUser,
+    this.showBottomNav = true,
+    this.mainDrawerItems = const [],
+    this.moduleDrawerItems = const [],
+    this.otherDrawerItems = const [],
+    this.bottomNavItems = const [],
+  });
+
+  AppState copyWith({
+    bool? isDrawerExpanded,
+    bool? disableDrawerGestures,
+    int? currentDrawerIndex,
+    int? currentModuleDrawerIndex,
+    bool? showVersionCode,
+    bool? forceUpdateCurrentUser,
+    UserInfo? currentUser,
+    bool? showBottomNav,
+    List<CustomNavigationDestinationItem>? mainDrawerItems,
+    List<CustomNavigationDestinationItem>? moduleDrawerItems,
+    List<CustomNavigationDestinationItem>? otherDrawerItems,
+    List<CustomNavigationDestinationItem>? bottomNavItems,
+  }) {
+    return AppState(
+      isDrawerExpanded: isDrawerExpanded ?? this.isDrawerExpanded,
+      disableDrawerGestures: disableDrawerGestures ?? this.disableDrawerGestures,
+      currentDrawerIndex: currentDrawerIndex ?? this.currentDrawerIndex,
+      currentModuleDrawerIndex: currentModuleDrawerIndex ?? this.currentModuleDrawerIndex,
+      showVersionCode: showVersionCode ?? this.showVersionCode,
+      currentUser: forceUpdateCurrentUser ?? false ? currentUser : currentUser ?? this.currentUser,
+      showBottomNav: showBottomNav ?? this.showBottomNav,
+      mainDrawerItems: mainDrawerItems ?? this.mainDrawerItems,
+      moduleDrawerItems: moduleDrawerItems ?? this.moduleDrawerItems,
+      otherDrawerItems: otherDrawerItems ?? this.otherDrawerItems,
+      bottomNavItems: bottomNavItems ?? this.bottomNavItems,
+    );
   }
 }
+
+final appControllerProvider = NotifierProvider<AppController, AppState>(AppController.new);

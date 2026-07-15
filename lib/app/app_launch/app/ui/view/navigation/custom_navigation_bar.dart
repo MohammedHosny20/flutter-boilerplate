@@ -2,9 +2,11 @@ part of '../../imports/app_imports.dart';
 
 PlatformNavBar buildCustomNavigationBar({
   required BuildContext context,
+  required WidgetRef ref,
   required StatefulNavigationShell navigationShell,
 }) {
-  final controller = AppController.instance;
+  final state = ref.watch(appControllerProvider);
+  final controller = ref.read(appControllerProvider.notifier);
   controller.updateBottomNavIndex(navigationShell.currentIndex);
 
   return CustomPlatformNavBar(
@@ -22,7 +24,7 @@ PlatformNavBar buildCustomNavigationBar({
             ? NavigationDestinationLabelBehavior.alwaysShow
             : NavigationDestinationLabelBehavior.alwaysShow,
         backgroundColor: context.colors.surface,
-        items: controller.bottomNavItems
+        items: state.bottomNavItems
             .mapWithIndex(
               (index, item) => CustomNavigationDestination(
                 icon:
@@ -44,7 +46,7 @@ PlatformNavBar buildCustomNavigationBar({
         backgroundColor: PlayxPlatform.isCupertino
             ? context.colors.surfaceContainerHigh.withValues(alpha: .7)
             : null,
-        items: controller.bottomNavItems
+        items: state.bottomNavItems
             .mapWithIndex(
               (index, item) => BottomNavigationBarItem(
                 icon:

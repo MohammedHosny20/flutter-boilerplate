@@ -14,10 +14,12 @@ import 'package:flutter_boilerplate/core/models/models.dart';
 import 'package:flutter_boilerplate/core/navigation/navigation.dart';
 import 'package:flutter_boilerplate/core/preferences/env_manger.dart';
 import 'package:flutter_boilerplate/core/preferences/preference_manger.dart';
+import 'package:flutter_boilerplate/core/providers.dart';
 import 'package:flutter_boilerplate/core/ui/resources/style/app_text_style.dart';
 import 'package:flutter_boilerplate/core/ui/ui.dart';
 import 'package:flutter_boilerplate/core/ui/widgets/responsive/responsive_navigation_config.dart';
 import 'package:flutter_boilerplate/core/utils/app_utils.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:playx/playx.dart';
 
 part '../controller/app_controller.dart';

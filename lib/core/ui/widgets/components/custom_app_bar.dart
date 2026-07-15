@@ -24,9 +24,7 @@ enum AppBarLeadingType {
                 builder: (context) {
                   return IconButton(
                     icon: Icon(
-                      PlayxPlatform.isIOS
-                          ? CupertinoIcons.back
-                          : Icons.arrow_back,
+                      PlayxPlatform.isIOS ? CupertinoIcons.back : Icons.arrow_back,
                       color: context.colors.onAppBar,
                     ),
                     onPressed: () {
@@ -59,8 +57,7 @@ PlatformAppBar buildAppBar({
   bool? showWhatsAppSupport,
 }) {
   final includeBreadcrumb =
-      (attachBreadcrumb ?? context.isLandscape) &&
-      breadcrumbs?.isNotEmpty == true;
+      (attachBreadcrumb ?? context.isLandscape) && breadcrumbs?.isNotEmpty == true;
   return PlatformAppBar(
     automaticallyImplyLeading: false,
     leading: MediaQuery.removePadding(
@@ -76,8 +73,7 @@ PlatformAppBar buildAppBar({
     trailingActions: [
       ...(actions ?? []),
       // Show logo and support button
-      if (showWhatsAppSupport ??
-          NavigationUtils.canShowDrawer || includeBreadcrumb)
+      if (showWhatsAppSupport ?? NavigationUtils.canShowDrawer || includeBreadcrumb)
         Padding(
           padding: EdgeInsets.symmetric(
             horizontal: PlayxPlatform.isIOS ? 0 : 8.r,
@@ -134,9 +130,7 @@ PlatformAppBar buildAppBar({
       backgroundColor: context.colors.appBar.withValues(alpha: .99),
       automaticBackgroundVisibility: false,
       bottom: bottom,
-      padding: context.isLandscape && context.isMobile
-          ? EdgeInsetsDirectional.zero
-          : null,
+      padding: context.isLandscape && context.isMobile ? EdgeInsetsDirectional.zero : null,
       // enableBackgroundFilterBlur: true,
     ),
   );
@@ -184,9 +178,7 @@ class BreadcrumbHeader extends StatelessWidget {
                   child: CustomText(
                     item.title,
                     fontSize: 14.sp,
-                    color: isLast
-                        ? (context.colors.onSurface)
-                        : (context.colors.subtitleTextColor),
+                    color: isLast ? (context.colors.onSurface) : (context.colors.subtitleTextColor),
                     fontWeight: isLast ? FontWeight.w500 : FontWeight.w400,
                   ),
                 ),

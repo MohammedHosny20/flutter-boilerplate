@@ -74,6 +74,8 @@
   "loginWithAuth0Label": "Login with Auth0",
   "loginWithEmailLabel": "Login with Email",
   "loginWithGoogleLabel": "Login with Google",
+  "loginWithPhoneLabel": "Login with Phone",
+  "countries": "Countries",
   "logout": "Log Out",
   "loremIpsum": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ",
   "mfaRegistrationRequiredErrorMessage": "MFA is required but the user is not enrolled.",
@@ -152,5 +154,16 @@
   "support": "Support",
   "search": "Search",
   "logoutDialogTitle": "Logout",
-  "logoutDialogMessage": "Are you sure you want to logout?"
+  "logoutDialogMessage": "Are you sure you want to logout?",
+  "searchCountries": "Search countries...",
+  "noCountriesFound": "No countries found",
+  "countryDetails": "Country Details",
+  "code": "Code",
+  "capital": "Capital",
+  "region": "Region",
+  "subregion": "Subregion",
+  "population": "Population",
+  "timezones": "Timezones",
+  "languages": "Languages",
+  "currencies": "Currencies"
 }

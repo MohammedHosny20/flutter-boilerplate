@@ -1,62 +1,59 @@
 part of '../../imports/register_imports.dart';
 
-class BuildRegisterPasswordFieldWidget extends GetView<RegisterController> {
+class BuildRegisterPasswordFieldWidget extends ConsumerWidget {
   const BuildRegisterPasswordFieldWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(registerControllerProvider);
+    final controller = ref.read(registerControllerProvider.notifier);
     return BuildRegisterFieldWidget(
       label: AppTrans.passwordLabel,
-      textField: Obx(() {
-        return CustomTextField(
-          hint: AppTrans.passwordHint,
-          controller: controller.passwordController,
-          obscureText: controller.hidePassword.value,
-          type: TextInputType.visiblePassword,
-          suffix: IconButton(
-            icon: Icon(
-              controller.hidePassword.value
-                  ? Icons.visibility_off
-                  : Icons.visibility,
-            ),
-            onPressed: controller.changeHidePasswordState,
-            // color: context.colors.secondary,
+      textField: CustomTextField(
+        hint: AppTrans.passwordHint,
+        controller: controller.passwordController,
+        obscureText: state.hidePassword,
+        type: TextInputType.visiblePassword,
+        suffix: IconButton(
+          icon: Icon(
+            state.hidePassword ? Icons.visibility_off : Icons.visibility,
           ),
-          validator: qValidator([
-            IsRequired(
-              AppTrans.passwordRequired.tr(context: context),
-            ),
-            MinLength(
-              6,
-              AppTrans.passwordMinLengthError.tr(context: context),
-            ),
-          ]),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: 14.r,
-            vertical: 10.r,
+          onPressed: controller.changeHidePasswordState,
+          // color: context.colors.secondary,
+        ),
+        validator: qValidator([
+          IsRequired(
+            AppTrans.passwordRequired.tr(context: context),
           ),
-          prefix: Icon(
-            Icons.lock,
-            color: context.colors.onSurface,
-            size: 18.r,
+          MinLength(
+            6,
+            AppTrans.passwordMinLengthError.tr(context: context),
           ),
-          onChanged: (text) {
-            if (controller.confirmPasswordController.value.text.isNotEmpty) {
-              AppUtils.validate(
-                controller.confirmPasswordFormKey,
-                controller.isConfirmPasswordValid,
-              );
-            }
-          },
-          shouldAutoValidate: true,
-          onValidationChanged: (isValid) {
-            controller.isPasswordValid.value = isValid;
-          },
-          textInputAction: TextInputAction.next,
-          focus: controller.passwordFocus,
-          nextFocus: controller.confirmPasswordFocus,
-        );
-      }),
+        ]),
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: 14.r,
+          vertical: 10.r,
+        ),
+        prefix: Icon(
+          Icons.lock,
+          color: context.colors.onSurface,
+          size: 18.r,
+        ),
+        onChanged: (text) {
+          if (controller.confirmPasswordController.value.text.isNotEmpty) {
+            final formState = controller.confirmPasswordFormKey.currentState;
+            final isValid = formState != null && formState.validate();
+            controller.setConfirmPasswordValid(isValid);
+          }
+        },
+        shouldAutoValidate: true,
+        onValidationChanged: (isValid) {
+          controller.setPasswordValid(isValid);
+        },
+        textInputAction: TextInputAction.next,
+        focus: controller.passwordFocus,
+        nextFocus: controller.confirmPasswordFocus,
+      ),
     );
   }
 }

@@ -28,8 +28,7 @@ class Animations {
   final String noConnection = 'assets/animation/no-connection.json';
   final String resetPasswords = 'assets/animation/reset-passwords.json';
   final String reset = 'assets/animation/reset.json';
-  final String subscriptionExpired =
-      'assets/animation/subscription_expired.json';
+  final String subscriptionExpired = 'assets/animation/subscription_expired.json';
   final String theme = 'assets/animation/theme.json';
   final String update = 'assets/animation/update.json';
 

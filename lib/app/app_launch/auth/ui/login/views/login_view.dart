@@ -1,11 +1,12 @@
 part of '../imports/login_imports.dart';
 
 // login screen widget.
-class LoginView extends GetView<LoginController> {
+class LoginView extends ConsumerWidget {
   const LoginView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(loginControllerProvider);
     return CustomScaffold(
       includeAppBar: false,
       includeLoadingOverlay: true,
@@ -22,15 +23,12 @@ class LoginView extends GetView<LoginController> {
               children: [
                 const BuildLoginLottieAnimation(),
                 const BuildLoginTitleWidget(),
-                Obx(() {
-                  return AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 350),
-                    child:
-                        controller.currentLoginMethod.value == LoginMethod.email
-                        ? const BuildLoginWithEmailWidget()
-                        : const BuildChooseLoginMethodWidget(),
-                  );
-                }),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 350),
+                  child: state.currentLoginMethod == LoginMethod.email
+                      ? const BuildLoginWithEmailWidget()
+                      : const BuildChooseLoginMethodWidget(),
+                ),
                 SizedBox(height: 8.r),
                 const BuildLoginRegisterNowWidget(),
                 SizedBox(height: 8.r),

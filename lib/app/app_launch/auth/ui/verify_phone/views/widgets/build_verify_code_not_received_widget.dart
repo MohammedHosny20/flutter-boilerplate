@@ -1,15 +1,15 @@
 part of '../../imports/verify_phone_view_imports.dart';
 
-class BuildVerifyCodeNotReceivedWidget extends GetView<VerifyPhoneController> {
+class BuildVerifyCodeNotReceivedWidget extends ConsumerWidget {
   const BuildVerifyCodeNotReceivedWidget();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
         _buildDidNotReceiveCodeText(context),
-        _buildResendCodeButton(context),
+        _buildResendCodeButton(context, ref),
       ],
     );
   }
@@ -28,13 +28,13 @@ class BuildVerifyCodeNotReceivedWidget extends GetView<VerifyPhoneController> {
     );
   }
 
-  Widget _buildResendCodeButton(BuildContext context) {
+  Widget _buildResendCodeButton(BuildContext context, WidgetRef ref) {
     return Container(
       padding: EdgeInsets.symmetric(
         horizontal: 8.h,
       ),
       child: TextButton(
-        onPressed: controller.resendCode,
+        onPressed: ref.read(verifyPhoneControllerProvider.notifier).resendCode,
         child: CustomText(
           AppTrans.resendCode,
           fontSize: 15.sp,

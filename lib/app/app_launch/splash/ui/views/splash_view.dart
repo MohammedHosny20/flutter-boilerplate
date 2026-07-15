@@ -1,11 +1,11 @@
 part of '../imports/splash_imports.dart';
 
 //splash screen.
-class SplashView extends GetView<SplashController> {
+class SplashView extends ConsumerWidget {
   const SplashView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return const PlatformScaffold(
       body: SafeArea(
         child: Column(

@@ -5,16 +5,13 @@ sealed class LoadingStatus {
 
   const LoadingStatus({required this.displayName});
 
-  const factory LoadingStatus.loading({String? displayName}) =
-      LoadingStatusLoading;
+  const factory LoadingStatus.loading({String? displayName}) = LoadingStatusLoading;
 
   const factory LoadingStatus.login({String? displayName}) = LoadingStatusLogin;
 
-  const factory LoadingStatus.register({String? displayName}) =
-      LoadingStatusRegister;
+  const factory LoadingStatus.register({String? displayName}) = LoadingStatusRegister;
 
-  const factory LoadingStatus.logout({String? displayName}) =
-      LoadingStatusLogout;
+  const factory LoadingStatus.logout({String? displayName}) = LoadingStatusLogout;
 
   const factory LoadingStatus.idle({String? displayName}) = LoadingStatusIdle;
 
@@ -71,8 +68,7 @@ class LoadingStatusLogout extends LoadingStatus {
 }
 
 class LoadingStatusIdle extends LoadingStatus {
-  const LoadingStatusIdle({String? displayName})
-    : super(displayName: displayName ?? '');
+  const LoadingStatusIdle({String? displayName}) : super(displayName: displayName ?? '');
 
   @override
   String toShortString() => 'idle';

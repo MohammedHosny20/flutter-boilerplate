@@ -1,10 +1,21 @@
 part of '../imports/onboarding_imports.dart';
 
-class OnBoardingController extends GetxController {
-  final pageController = PageController();
+class OnBoardingState {
+  final int currentIndex;
+  final bool isCompleted;
 
-  final currentIndex = 0.obs;
-  final isCompleted = false.obs;
+  OnBoardingState({this.currentIndex = 0, this.isCompleted = false});
+
+  OnBoardingState copyWith({int? currentIndex, bool? isCompleted}) {
+    return OnBoardingState(
+      currentIndex: currentIndex ?? this.currentIndex,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
+}
+
+class OnBoardingController extends Notifier<OnBoardingState> {
+  final pageController = PageController();
 
   final pages = <OnBoarding>[
     OnBoarding(
@@ -24,14 +35,18 @@ class OnBoardingController extends GetxController {
     ),
   ];
 
-  Future<void> handleNextOrSkip() async {
-    if (isCompleted.value) {
-      MyPreferenceManger.instance.saveOnBoardingShown();
+  @override
+  OnBoardingState build() {
+    return OnBoardingState();
+  }
 
+  Future<void> handleNextOrSkip() async {
+    if (state.isCompleted) {
+      MyPreferenceManger.instance.saveOnBoardingShown();
       AppNavigation.navigateFromOnBoardingToLogin();
     } else {
       pageController.animateToPage(
-        currentIndex.value + 1,
+        state.currentIndex + 1,
         duration: const Duration(milliseconds: 350),
         curve: Curves.easeInOut,
       );
@@ -39,7 +54,13 @@ class OnBoardingController extends GetxController {
   }
 
   void onPageChanged(int value) {
-    currentIndex.value = value;
-    isCompleted.value = value == pages.length - 1;
+    state = state.copyWith(
+      currentIndex: value,
+      isCompleted: value == pages.length - 1,
+    );
   }
 }
+
+final onboardingControllerProvider = NotifierProvider<OnBoardingController, OnBoardingState>(
+  OnBoardingController.new,
+);

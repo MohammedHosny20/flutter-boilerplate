@@ -7,11 +7,9 @@ import 'package:playx/playx.dart';
 
 class AppRepository {
   final AppDatasource _dataSource;
-  AppRepository({
+  const AppRepository({
     required AppDatasource dataSource,
   }) : _dataSource = dataSource;
-
-  static AppRepository get instance => getIt.get<AppRepository>();
 
   List<CustomNavigationDestinationItem> get mainDrawerItems => [
     CustomNavigationDestinationItem(
@@ -25,15 +23,20 @@ class AppRepository {
       navigationIndex: 1,
     ),
     CustomNavigationDestinationItem(
+      icon: IconInfo.icon(Icons.public),
+      label: AppTrans.countries,
+      navigationIndex: 2,
+    ),
+    CustomNavigationDestinationItem(
       icon: IconInfo.svg(Assets.icons.settings),
       label: AppTrans.settings,
-      navigationIndex: 2,
+      navigationIndex: 3,
     ),
   ];
 
   List<CustomNavigationDestinationItem> get otherDrawerItems => [
     CustomNavigationDestinationItem(
-      icon: IconInfo.icon(FontAwesomeIcons.whatsapp),
+      icon: IconInfo.icon(FontAwesomeIcons.whatsapp.data),
       label: AppTrans.support,
     ),
     CustomNavigationDestinationItem(

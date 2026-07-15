@@ -43,13 +43,11 @@ class CustomDropDown<T> extends StatelessWidget {
     return DropdownButtonHideUnderline(
       child: DropdownButton2<T>(
         isExpanded: true,
-        hint:
-            hintWidget ??
-            CustomText(hint ?? '', fontSize: 14.sp, color: Colors.grey),
+        hint: hintWidget ?? CustomText(hint ?? '', fontSize: 14.sp, color: Colors.grey),
         items: [
           ..._itemsWidgets(context),
           if (bottomWidget != null)
-            DropdownMenuItem<T>(
+            DropdownItem<T>(
               enabled: false,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
@@ -66,7 +64,7 @@ class CustomDropDown<T> extends StatelessWidget {
               ),
             ),
         ],
-        value: selectedItem,
+        valueListenable: ValueNotifier<T?>(selectedItem),
         onChanged: (value) {
           onSelected?.call(value);
         },
@@ -114,9 +112,9 @@ class CustomDropDown<T> extends StatelessWidget {
     );
   }
 
-  Iterable<DropdownMenuItem<T>> _itemsWidgets(BuildContext context) {
+  Iterable<DropdownItem<T>> _itemsWidgets(BuildContext context) {
     return items.map(
-      (T item) => DropdownMenuItem<T>(
+      (T item) => DropdownItem<T>(
         value: item,
         child:
             itemBuilder?.call(item) ??

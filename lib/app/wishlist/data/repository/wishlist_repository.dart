@@ -1,15 +1,12 @@
 import 'package:flutter_boilerplate/app/wishlist/data/datasource/db/local_wishlist_data_source.dart';
 import 'package:flutter_boilerplate/app/wishlist/data/model/mapper/database_wishlist_to_wishlist_item_mapper.dart';
 import 'package:flutter_boilerplate/app/wishlist/data/model/ui/wishlist.dart';
-import 'package:playx/playx.dart';
 
 class WishlistRepository {
   final LocalWishlistDataSource _localDatasource;
-  WishlistRepository({
+  const WishlistRepository({
     required LocalWishlistDataSource localDatasource,
   }) : _localDatasource = localDatasource;
-
-  static WishlistRepository get instance => getIt.get<WishlistRepository>();
 
   Future<List<WishlistItem>> getAllWishlistItems() async {
     final items = await _localDatasource.getAllWishlistItems();

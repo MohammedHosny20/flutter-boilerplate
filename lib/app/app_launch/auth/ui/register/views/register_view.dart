@@ -1,17 +1,18 @@
 part of '../imports/register_imports.dart';
 
-class RegisterView extends GetView<RegisterController> {
+class RegisterView extends ConsumerWidget {
   const RegisterView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final state = ref.watch(registerControllerProvider);
     return Title(
       title: AppTrans.registerText.tr(context: context),
       color: context.colors.primary,
       child: BackButtonListener(
         onBackButtonPressed: () async {
-          if (controller.currentLoginMethod.value == LoginMethod.email) {
-            controller.currentLoginMethod.value = null;
+          if (state.currentLoginMethod == LoginMethod.email) {
+            ref.read(registerControllerProvider.notifier).setCurrentLoginMethod(null);
             return true;
           } else {
             return false;
@@ -47,29 +48,25 @@ class RegisterView extends GetView<RegisterController> {
                             ],
                           ),
                           Expanded(
-                            child: Obx(() {
-                              return AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 500),
-                                transitionBuilder:
-                                    (
-                                      Widget child,
-                                      Animation<double> animation,
-                                    ) {
-                                      return SlideTransition(
-                                        position: Tween<Offset>(
-                                          begin: const Offset(1, 0),
-                                          end: Offset.zero,
-                                        ).animate(animation),
-                                        child: child,
-                                      );
-                                    },
-                                child:
-                                    controller.currentLoginMethod.value ==
-                                        LoginMethod.email
-                                    ? const BuildRegisterWithEmailWidget()
-                                    : const BuildChooseRegisterMethodWidget(),
-                              );
-                            }),
+                            child: AnimatedSwitcher(
+                              duration: const Duration(milliseconds: 500),
+                              transitionBuilder:
+                                  (
+                                    Widget child,
+                                    Animation<double> animation,
+                                  ) {
+                                    return SlideTransition(
+                                      position: Tween<Offset>(
+                                        begin: const Offset(1, 0),
+                                        end: Offset.zero,
+                                      ).animate(animation),
+                                      child: child,
+                                    );
+                                  },
+                              child: state.currentLoginMethod == LoginMethod.email
+                                  ? const BuildRegisterWithEmailWidget()
+                                  : const BuildChooseRegisterMethodWidget(),
+                            ),
                           ),
                         ],
                       ),

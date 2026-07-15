@@ -4,7 +4,7 @@ import 'package:playx/playx.dart';
 
 /// contains global keys
 abstract class Constants {
-  Constants._();
+  const Constants._();
 
   static const String? googleSignInServerId = null;
 
@@ -35,4 +35,8 @@ abstract class Constants {
   static String auth0WebClientId = '';
 
   static String whatsappNumber = '';
+
+  /// REST Countries API key. The demo key works for trying the API;
+  /// sign up at https://restcountries.com/sign-up to get your own.
+  static const String restCountriesApiKey = 'rc_live_demo';
 }

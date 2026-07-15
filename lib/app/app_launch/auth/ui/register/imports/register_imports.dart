@@ -4,14 +4,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boilerplate/app/app_launch/app/ui/imports/app_imports.dart';
 import 'package:flutter_boilerplate/app/app_launch/auth/data/models/models.dart';
-import 'package:flutter_boilerplate/app/app_launch/auth/data/repo/auth_repository.dart';
 import 'package:flutter_boilerplate/core/navigation/navigation.dart';
+import 'package:flutter_boilerplate/core/providers.dart';
 import 'package:flutter_boilerplate/core/ui/ui.dart';
-import 'package:flutter_boilerplate/core/utils/app_utils.dart';
-import 'package:flutter_boilerplate/core/utils/are_equals_validation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:playx/playx.dart';
 
-part '../bindings/register_binding.dart';
 part '../controllers/register_controller.dart';
 part '../views/register_view.dart';
 part '../views/widgets/build_choose_register_method_widget.dart';

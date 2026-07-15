@@ -1,15 +1,35 @@
 part of '../network.dart';
 
 abstract class ApiClient {
-  ApiClient._();
-  static Future<String?> get apiToken async =>
-      MyPreferenceManger.instance.token;
+  const ApiClient._();
+  static Future<String?> get apiToken => MyPreferenceManger.instance.token;
 
-  static PlayxNetworkClient get client => getIt.get<PlayxNetworkClient>();
+  static PlayxNetworkClient? _client;
+  static PlayxNetworkClient get client {
+    final c = _client;
+    if (c == null) {
+      throw StateError('ApiClient not initialised. Call init() first.');
+    }
+    return c;
+  }
 
-  static Auth0 get auth0 => getIt.get<Auth0>();
+  static Auth0? _auth0;
+  static Auth0 get auth0 {
+    final a = _auth0;
+    if (a == null) {
+      throw StateError('ApiClient not initialised. Call init() first.');
+    }
+    return a;
+  }
 
-  static Auth0Web get auth0Web => getIt.get<Auth0Web>();
+  static Auth0Web? _auth0Web;
+  static Auth0Web get auth0Web {
+    final a = _auth0Web;
+    if (a == null) {
+      throw StateError('ApiClient not initialised. Call init() first.');
+    }
+    return a;
+  }
 
   static Future<PlayxNetworkClient> createApiClient() async {
     final dio = Dio(
@@ -45,26 +65,16 @@ abstract class ApiClient {
   }
 
   static Future<void> init() async {
-    final PlayxNetworkClient client = await ApiClient.createApiClient();
-    getIt.registerSingleton<PlayxNetworkClient>(client);
+    _client = await ApiClient.createApiClient();
 
-    final Auth0 auth0 = Auth0(
+    _auth0 = Auth0(
       Constants.auth0Domain,
       Constants.auth0ClientId,
     );
 
-    final Auth0Web auth0Web = Auth0Web(
+    _auth0Web = Auth0Web(
       Constants.auth0Domain,
       Constants.auth0WebClientId,
     );
-
-    getIt.registerSingleton<Auth0>(auth0);
-    getIt.registerSingleton<Auth0Web>(auth0Web);
-  }
-
-  static Future<void> _signOut() async {
-    final preferenceManger = MyPreferenceManger.instance;
-    await preferenceManger.signOut();
-    AppNavigation.navigateToSplash();
   }
 }

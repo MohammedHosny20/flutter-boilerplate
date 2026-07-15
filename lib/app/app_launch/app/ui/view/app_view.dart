@@ -1,8 +1,11 @@
 part of '../imports/app_imports.dart';
 
-class AppView extends GetView<AppController> {
+class AppView extends ConsumerWidget {
+  const AppView({super.key});
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    ref.watch(appControllerProvider);
     return Container();
   }
 }

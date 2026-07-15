@@ -1,118 +1,128 @@
 part of '../imports/login_imports.dart';
 
-///Login controller to setup data to the ui.
-class LoginController extends GetxController {
-  final AuthRepository authRepository;
+class LoginState {
+  final bool hidePassword;
+  final bool isEmailValid;
+  final bool isPasswordValid;
+  final bool isFormValid;
+  final LoginMethod? currentLoginMethod;
 
-  LoginController({
-    required this.authRepository,
+  const LoginState({
+    this.hidePassword = true,
+    this.isEmailValid = false,
+    this.isPasswordValid = false,
+    this.isFormValid = false,
+    this.currentLoginMethod,
   });
 
-  final hidePassword = true.obs;
+  LoginState copyWith({
+    bool? hidePassword,
+    bool? isEmailValid,
+    bool? isPasswordValid,
+    bool? isFormValid,
+    LoginMethod? currentLoginMethod,
+  }) {
+    return LoginState(
+      hidePassword: hidePassword ?? this.hidePassword,
+      isEmailValid: isEmailValid ?? this.isEmailValid,
+      isPasswordValid: isPasswordValid ?? this.isPasswordValid,
+      isFormValid: isFormValid ?? this.isFormValid,
+      currentLoginMethod: currentLoginMethod ?? this.currentLoginMethod,
+    );
+  }
+}
 
+class LoginController extends Notifier<LoginState> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  final isEmailValid = false.obs;
-  final isPasswordValid = false.obs;
-
-  final isFormValid = false.obs;
-  Worker? _validationWorker;
-
-  final Rxn<LoginMethod> currentLoginMethod = Rxn();
   final loginMethods = <LoginMethod>[
     LoginMethod.email,
+    LoginMethod.phone,
     LoginMethod.google,
     LoginMethod.apple,
   ];
 
   @override
-  void onInit() {
-    if (kDebugMode) {
-      // emailController.text = 'bbbb@mail.com';
-      // passwordController.text = '123456';
-      // isEmailValid.value = true;
-      // isPasswordValid.value = true;
-      // isFormValid.value = true;
-    }
-    super.onInit();
-    listenToValidationState();
+  LoginState build() {
+    return const LoginState();
   }
 
-  void listenToValidationState() {
-    _validationWorker = everAll(
-      [
-        isEmailValid,
-        isPasswordValid,
-      ],
-      (callback) {
-        final isValid = isEmailValid.value && isPasswordValid.value;
-        isFormValid.value = isValid;
-      },
+  void _updateFormValidity() {
+    state = state.copyWith(
+      isFormValid: state.isEmailValid && state.isPasswordValid,
     );
   }
 
-  Future<void> loginBy({required LoginMethod method}) async {
-    currentLoginMethod.value = method;
-    if (method == LoginMethod.email) {
-      currentLoginMethod.value = LoginMethod.email;
-    } else {
-      AppController.instance.loadingStatus.value = const LoadingStatus.login();
+  void setEmailValid(bool value) {
+    state = state.copyWith(isEmailValid: value);
+    _updateFormValidity();
+  }
 
-      currentLoginMethod.value = null;
-      final result = await authRepository.loginViaAuth0(method: method);
+  void setPasswordValid(bool value) {
+    state = state.copyWith(isPasswordValid: value);
+    _updateFormValidity();
+  }
+
+  void toggleHidePassword() {
+    state = state.copyWith(hidePassword: !state.hidePassword);
+  }
+
+  void setCurrentLoginMethod(LoginMethod? method) {
+    state = state.copyWith(currentLoginMethod: method);
+  }
+
+  Future<void> loginBy({required LoginMethod method}) async {
+    if (method == LoginMethod.email) {
+      setCurrentLoginMethod(LoginMethod.email);
+    } else if (method == LoginMethod.phone) {
+      AppNavigation.navigateToOtpLogin();
+    } else {
+      setCurrentLoginMethod(null);
+      ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.login();
+
+      final authRepo = await ref.read(authRepositoryProvider.future);
+      final result = await authRepo.loginViaAuth0(method: method);
       result.when(
         success: (User user) {
           _navigateToHome();
         },
         error: (NetworkException exception) {
           Alert.error(message: exception.message);
-          AppController.instance.loadingStatus.value =
-              const LoadingStatus.idle();
+          ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.idle();
         },
       );
     }
   }
 
   Future<void> login() async {
-    if (!isFormValid()) return;
+    if (!state.isFormValid) return;
     FocusManager.instance.primaryFocus?.unfocus();
-    AppController.instance.loadingStatus.value = const LoadingStatus.login();
-    final result = await authRepository.loginViaEmailAndPassword(
+    ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.login();
+    final authRepo = await ref.read(authRepositoryProvider.future);
+    final result = await authRepo.loginViaEmailAndPassword(
       email: emailController.text,
       password: passwordController.text,
     );
     result.when(
       success: (User user) async {
-        // if (saveLoginInfo.value) {
-        //   await authRepository.saveLoginInfo(
-        //     email: emailController.text,
-        //     password: passwordController.text,
-        //   );
-        // }
         await _navigateToHome();
       },
       error: (NetworkException exception) {
-        AppController.instance.loadingStatus.value = const LoadingStatus.idle();
+        ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.idle();
         Alert.error(message: exception.message);
       },
     );
   }
 
   Future<void> _navigateToHome() async {
-    AppController.instance.loadingStatus.value = const LoadingStatus.idle();
+    ref.read(appControllerProvider.notifier).loadingStatus.value = const LoadingStatus.idle();
     AppNavigation.navigateFromLoginToHome();
   }
 
   void navigateToRegister() {
     AppNavigation.navigateFromLoginToRegister();
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-    emailController.dispose();
-    passwordController.dispose();
-    _validationWorker?.dispose();
-  }
 }
+
+final loginControllerProvider = NotifierProvider<LoginController, LoginState>(LoginController.new);

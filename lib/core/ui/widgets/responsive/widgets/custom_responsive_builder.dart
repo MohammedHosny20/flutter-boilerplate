@@ -51,8 +51,7 @@ class CustomResponsiveBuilder extends StatefulWidget {
   });
 
   @override
-  State<CustomResponsiveBuilder> createState() =>
-      _CustomResponsiveBuilderState();
+  State<CustomResponsiveBuilder> createState() => _CustomResponsiveBuilderState();
 }
 
 class _CustomResponsiveBuilderState extends State<CustomResponsiveBuilder>
@@ -123,9 +122,7 @@ class _CustomResponsiveBuilderState extends State<CustomResponsiveBuilder>
       mobileBreakpoint: widget.mobileBreakpoint,
       tabletBreakpoint: widget.tabletBreakpoint,
     );
-    final orientation = context.isLandscape
-        ? OrientationType.landscape
-        : OrientationType.portrait;
+    final orientation = context.isLandscape ? OrientationType.landscape : OrientationType.portrait;
 
     return DeviceInfo(
       type: deviceType,
@@ -148,12 +145,10 @@ class _CustomResponsiveBuilderState extends State<CustomResponsiveBuilder>
       if (_currentDeviceInfo != null) {
         final oldInfo = _currentDeviceInfo!;
         if (oldInfo.type != newInfo.type) {
-          '📱 Device type: ${oldInfo.type.name} → ${newInfo.type.name}'
-              .printInfo();
+          '📱 Device type: ${oldInfo.type.name} → ${newInfo.type.name}'.printInfo();
         }
         if (oldInfo.orientation != newInfo.orientation) {
-          '🔄 Orientation: ${oldInfo.orientation.name} → ${newInfo.orientation.name}'
-              .printInfo();
+          '🔄 Orientation: ${oldInfo.orientation.name} → ${newInfo.orientation.name}'.printInfo();
         }
         if (oldInfo.isDarkTheme != newInfo.isDarkTheme) {
           '🌙 Theme: ${oldInfo.isDarkTheme ? 'dark' : 'light'} → ${newInfo.isDarkTheme ? 'dark' : 'light'}'
