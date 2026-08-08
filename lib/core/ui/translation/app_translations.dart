@@ -149,6 +149,17 @@ abstract class AppTrans {
 
   static const dashboard = 'dashboard';
   static const wishlist = 'wishlist';
+  static const products = 'products';
+  static const productDetails = 'productDetails';
+  static const searchProducts = 'searchProducts';
+  static const noProductsFound = 'noProductsFound';
+  static const description = 'description';
+  static const productInfo = 'productInfo';
+  static const warranty = 'warranty';
+  static const shipping = 'shipping';
+  static const returnPolicy = 'returnPolicy';
+  static const reviews = 'reviews';
+  static const stock = 'stock';
   static const validNumberMinLength = 'validNumberMinLength';
 
   static const noInternetConnectionBannerMsg = 'noInternetConnectionBannerMsg';

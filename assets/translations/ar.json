@@ -145,5 +145,16 @@
   "verifyPhoneSubtitle": "أدخل الكود المكون من 4 أرقام الذي تم إرساله إلي هاتفك.",
   "verifyPhoneTitle": "تأكيد رقم الهاتف",
   "verifyPhoneValidOtpError": "الكود ليس رقم صحيح",
-  "wishlist": "قائمة الأمنيات"
+  "wishlist": "قائمة الأمنيات",
+  "products": "المنتجات",
+  "productDetails": "تفاصيل المنتج",
+  "searchProducts": "ابحث عن المنتجات...",
+  "noProductsFound": "لا توجد منتجات",
+  "description": "الوصف",
+  "productInfo": "معلومات المنتج",
+  "warranty": "الضمان",
+  "shipping": "الشحن",
+  "returnPolicy": "سياسة الإرجاع",
+  "reviews": "التقييمات",
+  "stock": "المخزون"
 }

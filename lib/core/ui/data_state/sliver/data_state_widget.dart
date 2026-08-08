@@ -75,6 +75,7 @@ class SliverDataStateWidget<T> extends StatelessWidget {
         }
       },
     );
+
     return widget;
   }
 }

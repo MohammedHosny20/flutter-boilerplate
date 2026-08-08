@@ -56,4 +56,11 @@ abstract class AppNavigation {
   static void navigateToLogin() {
     PlayxNavigation.offAllNamed(Routes.login);
   }
+
+  static void navigateToProductDetails({required int id}) {
+    PlayxNavigation.toNamed(
+      Routes.productDetails,
+      pathParameters: {'id': '$id'},
+    );
+  }
 }

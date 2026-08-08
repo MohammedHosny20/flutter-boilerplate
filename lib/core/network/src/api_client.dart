@@ -2,8 +2,7 @@ part of '../network.dart';
 
 abstract class ApiClient {
   ApiClient._();
-  static Future<String?> get apiToken async =>
-      MyPreferenceManger.instance.token;
+  static Future<String?> get apiToken => MyPreferenceManger.instance.token;
 
   static PlayxNetworkClient get client => getIt.get<PlayxNetworkClient>();
 
@@ -44,6 +43,29 @@ abstract class ApiClient {
     );
   }
 
+  static (Dio, PlayxNetworkClient) createProductsClient() {
+    final dio = Dio(
+      BaseOptions(
+        baseUrl: Endpoints.productsBaseUrl,
+        validateStatus: (_) => true,
+        followRedirects: true,
+        connectTimeout: const Duration(seconds: 30),
+        sendTimeout: const Duration(seconds: 30),
+        contentType: Headers.jsonContentType,
+      ),
+    );
+
+    dio.addSentry();
+
+    final client = PlayxNetworkClient(
+      dio: dio,
+      settings: const PlayxNetworkClientSettings(
+        exceptionMessages: CustomExceptionMessage(),
+      ),
+    );
+    return (dio, client);
+  }
+
   static Future<void> init() async {
     final PlayxNetworkClient client = await ApiClient.createApiClient();
     getIt.registerSingleton<PlayxNetworkClient>(client);
@@ -68,3 +90,10 @@ abstract class ApiClient {
     AppNavigation.navigateToSplash();
   }
 }
+
+/// Riverpod access to [ApiClient.createProductsClient].
+final productsClientProvider = Provider<PlayxNetworkClient>((ref) {
+  final (dio, client) = ApiClient.createProductsClient();
+  ref.onDispose(dio.close);
+  return client;
+});

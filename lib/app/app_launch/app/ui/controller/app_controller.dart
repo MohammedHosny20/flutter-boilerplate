@@ -11,30 +11,29 @@ class AppController extends GetxController {
 
   late final List<CustomNavigationDestinationItem> bottomNavItems = [
     CustomNavigationDestinationItem(
-      icon: IconInfo(
-        icon: Icons.home_outlined,
-      ),
+      icon: IconInfo(icon: CupertinoIcons.house),
       label: AppTrans.home,
       navigationIndex: 0,
     ),
     CustomNavigationDestinationItem(
-      icon: IconInfo(
-        icon: Icons.favorite_border,
-      ),
+      icon: IconInfo(icon: CupertinoIcons.heart),
       label: AppTrans.wishlist,
       navigationIndex: 1,
     ),
     CustomNavigationDestinationItem(
-      icon: IconInfo(
-        icon: Icons.settings,
-      ),
-      label: AppTrans.settings,
+      icon: IconInfo(icon: CupertinoIcons.cube_box),
+      label: AppTrans.products,
       navigationIndex: 2,
+    ),
+    CustomNavigationDestinationItem(
+      icon: IconInfo(icon: CupertinoIcons.settings),
+      label: AppTrans.settings,
+      navigationIndex: 3,
     ),
   ];
 
   void updateBottomNavIndex(int index) {
-    if (index < 3) {
+    if (index < bottomNavItems.length) {
       currentBottomNavIndex = index;
     } else if (index < 0) {
       currentBottomNavIndex = 0;
@@ -49,7 +48,7 @@ class AppController extends GetxController {
   }
 
   void updateDrawerIndex(int index) {
-    if (index < 3) {
+    if (index < bottomNavItems.length) {
       currentDrawerIndex = index;
     } else if (index < 0) {
       currentDrawerIndex = 0;
@@ -60,7 +59,7 @@ class AppController extends GetxController {
     required int index,
     required StatefulNavigationShell navigationShell,
   }) {
-    if (index == 3) {
+    if (index == bottomNavItems.length) {
       handleLogout();
       return;
     }

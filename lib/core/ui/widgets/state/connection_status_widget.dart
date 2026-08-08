@@ -1,6 +1,8 @@
 part of '../../ui.dart';
 
-class ConnectionStatusWidget extends StatefulWidget {
+/// Provides [ScaffoldMessenger] for connection banners.
+/// All connection / banner logic lives in [ConnectionStatusNotifier].
+class ConnectionStatusWidget extends ConsumerWidget {
   final Widget child;
   final bool enableCheckingInternet;
   final bool retryOnConnectionRestored;
@@ -16,108 +18,21 @@ class ConnectionStatusWidget extends StatefulWidget {
   });
 
   @override
-  State<ConnectionStatusWidget> createState() => _ConnectionStatusWidgetState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final notifier = ref.watch(connectionStatusProvider.notifier);
 
-class _ConnectionStatusWidgetState extends State<ConnectionStatusWidget> {
-  ConnectionStatusController get controller =>
-      Get.find<ConnectionStatusController>();
-
-  Worker? connectionWorker;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (widget.enableCheckingInternet) {
-      return ValueListenableBuilder(
-        valueListenable: controller,
-        child: widget.child,
-        builder: (ctx, status, child) {
-          switch (status) {
-            case ConnectionStatus.connected:
-              hideBanner();
-            case ConnectionStatus.disconnected:
-              showDisconnectedBanner();
-            case ConnectionStatus.connectionRestored:
-              showConnectionRestoredBanner();
-              if (widget.retryOnConnectionRestored) {
-                widget.onRetryClicked?.call();
-              }
-          }
-
-          return child ?? widget.child;
-        },
+    if (enableCheckingInternet) {
+      ref.watch(connectionStatusProvider);
+      notifier.bindConnectionStatusUi(
+        onRetryClicked: onRetryClicked,
+        retryOnConnectionRestored: retryOnConnectionRestored,
+        focusNode: focusNode,
       );
     }
-    return widget.child;
-  }
 
-  void hideBanner() {
-    Alert.hideBanner();
-  }
-
-  void showConnectionRestoredBanner() {
-    Alert.showBanner(
-      message:
-          AppTrans.internetConnectionRestoredBannerMsg.tr(context: context),
-      color: Colors.green,
-      actions: [
-        TextButton(
-          onPressed: () {
-            hideBanner();
-          },
-          focusNode: widget.focusNode,
-          child: Padding(
-            padding: EdgeInsets.all(4.0.r),
-            child: CustomText(
-              AppTrans.noInternetConnectionDismissBannerMsg,
-              color: Colors.white,
-              fontSize: 12.sp,
-            ),
-          ),
-        ),
-      ],
+    return ScaffoldMessenger(
+      key: notifier.scaffoldMessengerKey,
+      child: Scaffold(body: child),
     );
-  }
-
-  void showDisconnectedBanner() {
-    final showRetryButton = widget.onRetryClicked != null;
-
-    Alert.showBanner(
-      message: AppTrans.noInternetConnectionBannerMsg.tr(context: context),
-      color: Colors.red,
-      textAlign: showRetryButton ? TextAlign.start : TextAlign.center,
-      actions: [
-        if (showRetryButton) ...[
-          TextButton(
-            onPressed: () {
-              widget.onRetryClicked?.call();
-            },
-            focusNode: widget.focusNode,
-            child: Padding(
-              padding: EdgeInsets.all(4.0.r),
-              child: CustomText(
-                AppTrans.refresh,
-                color: Colors.white,
-                fontSize: 12.sp,
-              ),
-            ),
-          ),
-        ] else ...[
-          const SizedBox(),
-        ],
-      ],
-    );
-  }
-
-  @override
-  void dispose() {
-    connectionWorker?.dispose();
-    connectionWorker = null;
-    super.dispose();
   }
 }

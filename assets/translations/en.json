@@ -145,5 +145,16 @@
   "verifyPhoneSubtitle": "Enter the 4 digits code sent to your phone number.",
   "verifyPhoneTitle": "Verify your mobile number",
   "verifyPhoneValidOtpError": "Pin is not a valid number",
-  "wishlist": "Wishlist"
+  "wishlist": "Wishlist",
+  "products": "Products",
+  "productDetails": "Product Details",
+  "searchProducts": "Search products...",
+  "noProductsFound": "No products found",
+  "description": "Description",
+  "productInfo": "Product Info",
+  "warranty": "Warranty",
+  "shipping": "Shipping",
+  "returnPolicy": "Return Policy",
+  "reviews": "Reviews",
+  "stock": "Stock"
 }

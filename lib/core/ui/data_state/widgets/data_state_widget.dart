@@ -2,7 +2,6 @@ part of '../../ui.dart';
 
 typedef DataCallback<T> = Widget Function(T? data);
 typedef SuccessDataCallback<T> = Widget Function(T data);
-
 typedef ErrorCallback<T> = Widget Function(String error);
 
 class DataStateWidget<T> extends StatelessWidget {
@@ -65,6 +64,7 @@ class DataStateWidget<T> extends StatelessWidget {
         }
       },
     );
+
     return widget;
   }
 }

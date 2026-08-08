@@ -66,6 +66,26 @@ class AppPages {
       StatefulShellBranch(
         routes: [
           PlayxRoute(
+            path: Paths.products,
+            name: Routes.products,
+            builder: (ctx, state) => const ProductsView(),
+            routes: [
+              PlayxRoute(
+                path: Paths.productDetails,
+                name: Routes.productDetails,
+                builder: (ctx, state) {
+                  final productId =
+                      int.tryParse(state.pathParameters['id'] ?? '') ?? 0;
+                  return ProductDetailsView(productId: productId);
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
+      StatefulShellBranch(
+        routes: [
+          PlayxRoute(
             path: Paths.settings,
             name: Routes.settings,
             builder: (ctx, state) => const SettingsView(),

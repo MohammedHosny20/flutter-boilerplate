@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_boilerplate/app/app_launch/app/ui/imports/app_imports.dart';
+import 'package:flutter_boilerplate/core/connection/connection_status_provider.dart';
 import 'package:flutter_boilerplate/core/models/models.dart';
 import 'package:flutter_boilerplate/core/navigation/navigation.dart';
 import 'package:flutter_boilerplate/core/ui/resources/assets/animations.dart';
@@ -14,6 +15,9 @@ import 'package:flutter_boilerplate/core/ui/resources/assets/icons.dart'
     as asset;
 import 'package:flutter_boilerplate/core/ui/resources/assets/images.dart';
 import 'package:flutter_boilerplate/core/utils/app_utils.dart';
+import 'package:flutter_boilerplate/core/utils/extensions.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:playx/playx.dart';
 
 part 'alerts/alert.dart';
@@ -65,6 +69,7 @@ part 'widgets/components/toggle_switch.dart';
 part 'widgets/counter_widget.dart';
 part 'widgets/keyboard_visibility_padding.dart';
 part 'widgets/place_holder_image.dart';
+part 'widgets/pagination/responsive_paged_sliver_view.dart';
 part 'widgets/state/connection_status_widget.dart';
 part 'widgets/state/custom_loading.dart';
 part 'widgets/state/empty_data_widget.dart';

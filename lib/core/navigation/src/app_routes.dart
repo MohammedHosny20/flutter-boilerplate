@@ -12,6 +12,8 @@ abstract class Routes {
   static const dashboard = 'dashboard';
   static const wishlist = 'wishlist';
   static const wishlistDetails = 'wishlistDetails';
+  static const products = 'products';
+  static const productDetails = 'productDetails';
 }
 
 /// app routes paths.
@@ -25,4 +27,6 @@ abstract class Paths {
   static const dashboard = '/dashboard';
   static const wishlist = '/wishlist';
   static const wishlistDetails = 'details';
+  static const products = '/products';
+  static const productDetails = 'details/:id';
 }

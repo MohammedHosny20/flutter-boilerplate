@@ -62,9 +62,7 @@ class AppConfig extends PlayXAppConfig {
     );
     getIt.registerSingleton<WishlistRepository>(wishlistRepository);
 
-    Get.put<AppController>(
-      AppController(),
-    );
+    Get.put<AppController>(AppController());
   }
 
   @override

@@ -35,10 +35,10 @@ class ApiHelper {
 
   Future<bool> isLoggedIn({bool checkAuth0 = true}) async {
     try {
-      final loginMethod = await _preferenceManger.loginMethod;
+      final authMethod = await _preferenceManger.authMethod;
 
       final checkAuth0Credentials =
-          checkAuth0 && loginMethod != null && loginMethod != LoginMethod.email;
+          checkAuth0 && authMethod != null && authMethod != LoginMethod.email;
 
       final isLoggedInAndSavedToPref = await _preferenceManger.isLoggedIn;
 
@@ -57,10 +57,10 @@ class ApiHelper {
   Future<void> logout() async {
     await _preferenceManger.signOut();
 
-    final loginMethod = await _preferenceManger.loginMethod;
+    final authMethod = await _preferenceManger.authMethod;
 
     final logOutFromAuth0 =
-        loginMethod != null && loginMethod != LoginMethod.email;
+        authMethod != null && authMethod != LoginMethod.email;
 
     if (logOutFromAuth0) {
       try {

@@ -5,6 +5,8 @@ extension ApiResponseToDataWrapper<T> on ApiResponse<T> {
     return DataWrapper<T>(
       data: data,
       pagination: meta?.toPageInfo(),
+      hasMore: meta?.pagination.hasMore,
+      message: message,
     );
   }
 
@@ -14,6 +16,8 @@ extension ApiResponseToDataWrapper<T> on ApiResponse<T> {
     return DataWrapper<S>(
       data: mapper(data),
       pagination: meta?.toPageInfo(),
+      hasMore: meta?.pagination.hasMore,
+      message: message,
     );
   }
 }
@@ -25,6 +29,7 @@ extension ApiMetaToPageInfo on ApiMeta {
       pageCount: pagination.pageCount,
       pageSize: pagination.pageSize,
       total: pagination.total,
+      hasMore: pagination.hasMore,
     );
   }
 }

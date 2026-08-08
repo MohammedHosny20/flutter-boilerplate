@@ -1,6 +1,21 @@
 # Sourcya Flutter Boilerplate
 
 This is a comprehensive boilerplate for building cross-platform applications using Flutter. It provides a structured architecture, streamlined configuration, and best practices for scalability and maintainability.
+
+## Architecture PoC (Products)
+
+This branch includes a Clean Architecture + Riverpod proof-of-concept for the **Products** feature (DummyJSON API):
+
+- List + details screens with search, pagination, and error/loading states
+- Layers: `domain` (entities, repository contract, use cases) → `data` (DTO, mapper, remote DS, repo impl) → `presentation` (Riverpod notifiers + views)
+- Technical write-up: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md)
+
+```bash
+flutter pub get
+flutter run
+```
+
+Open the **Products** tab (cube icon) after the normal splash/login flow.
   
 ---  
 

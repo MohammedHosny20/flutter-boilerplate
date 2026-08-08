@@ -20,7 +20,7 @@ class MyPreferenceManger {
 
   Future<bool> get isLoggedOut async => !(await isLoggedIn);
 
-  Future<LoginMethod?> get loginMethod async {
+  Future<LoginMethod?> get authMethod async {
     final String? value =
         await PlayxSecurePrefs.maybeGetString(_loginMethodKey);
     return LoginMethod.fromValue(value);

@@ -132,7 +132,7 @@ class CustomDialogModal extends WoltModalType {
 
     // Position animation for entering (96px upwards) and exiting (96px downwards)
     final positionAnimation = Tween<Offset>(
-      end: const Offset(0.0, 0.0),
+      end: Offset.zero,
       begin: Offset(0.0, isClosing ? 0.05 : 0.1),
     ).animate(
       CurvedAnimation(

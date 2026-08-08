@@ -31,27 +31,33 @@ class CustomNavigationDrawer extends StatelessWidget {
             ),
           ),
           buildNavigationDrawerDestination(
-            icon: Icons.dashboard,
+            icon: CupertinoIcons.house,
             label: AppTrans.dashboard,
             context: context,
           ),
           buildNavigationDrawerDestination(
-            icon: Icons.favorite_border,
+            icon: CupertinoIcons.heart,
             label: AppTrans.wishlist,
             index: 1,
             context: context,
           ),
           buildNavigationDrawerDestination(
-            icon: Icons.settings,
-            label: AppTrans.settings,
+            icon: CupertinoIcons.cube_box,
+            label: AppTrans.products,
             index: 2,
+            context: context,
+          ),
+          buildNavigationDrawerDestination(
+            icon: CupertinoIcons.settings,
+            label: AppTrans.settings,
+            index: 3,
             context: context,
           ),
           Divider(
             color: context.colors.onSurface.withValues(alpha: .3),
           ),
           NavigationDrawerDestination(
-            icon: const Icon(Icons.logout),
+            icon: const Icon(CupertinoIcons.square_arrow_right),
             label: CustomText(AppTrans.logout.tr(context: context)),
           ),
         ],

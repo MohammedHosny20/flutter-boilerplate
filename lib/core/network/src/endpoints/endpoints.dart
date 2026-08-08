@@ -1,8 +1,13 @@
 part of '../../network.dart';
 
-/// contains network endpoints.
-abstract class Endpoints {
-  static const baseUrl = "https://sourcya-connect.herokuapp.com";
+/// Network path / URL constants.
+extension Endpoints on Never {
+  static const baseUrl = 'https://sourcya-connect.herokuapp.com';
+
+  static const productsBaseUrl = 'https://dummyjson.com';
+  static const products = '/products';
+  static const productsSearch = '/products/search';
+  static String productById(int id) => '/products/$id';
 
   /// `POST`
   static const loginViaAuth0 = '/auth/auth0/callback';

@@ -48,6 +48,10 @@ abstract class AppColors extends PlayxColors {
   static const Color blue = Colors.blue;
 
   static const Color primaryKey = Colors.black;
+
+  static const Color ratingStar = Color(0xFFF9CA3E);
+
+  static const Color baseWhite = Colors.white;
 }
 
 extension AppColorsExtension on BuildContext {

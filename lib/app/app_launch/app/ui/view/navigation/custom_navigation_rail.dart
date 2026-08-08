@@ -21,15 +21,19 @@ class CustomNavigationRail extends StatelessWidget {
       labelType: NavigationRailLabelType.all,
       destinations: [
         NavigationRailDestination(
-          icon: const Icon(Icons.home),
+          icon: const Icon(CupertinoIcons.house),
           label: Text(AppTrans.dashboard.tr(context: context)),
         ),
         NavigationRailDestination(
-          icon: const Icon(Icons.favorite_border),
+          icon: const Icon(CupertinoIcons.heart),
           label: Text(AppTrans.wishlist.tr(context: context)),
         ),
         NavigationRailDestination(
-          icon: const Icon(Icons.settings),
+          icon: const Icon(CupertinoIcons.cube_box),
+          label: Text(AppTrans.products.tr(context: context)),
+        ),
+        NavigationRailDestination(
+          icon: const Icon(CupertinoIcons.settings),
           label: Text(AppTrans.settings.tr(context: context)),
         ),
       ],

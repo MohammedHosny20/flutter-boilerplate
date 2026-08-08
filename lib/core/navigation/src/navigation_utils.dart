@@ -10,8 +10,9 @@ class NavigationUtils {
 
   static List<String> get routesBottomNav => [
         Routes.dashboard,
-        Routes.settings,
         Routes.wishlist,
+        Routes.products,
+        Routes.settings,
       ];
 
   static bool get showBottomNav =>
