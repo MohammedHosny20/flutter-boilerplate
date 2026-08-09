@@ -1,6 +1,6 @@
 import 'package:flutter_boilerplate/app/products/domain/domain.dart';
-import 'package:flutter_boilerplate/core/base/base_repository.dart';
 import 'package:flutter_boilerplate/core/models/models.dart';
+import 'package:flutter_boilerplate/core/network/src/result_types.dart';
 
 /// Contract for product catalog operations.
 ///

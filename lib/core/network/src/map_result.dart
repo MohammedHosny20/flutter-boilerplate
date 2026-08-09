@@ -1,10 +1,10 @@
 import 'package:flutter_boilerplate/core/config/app_config.dart';
+import 'package:flutter_boilerplate/core/network/src/result_types.dart';
 import 'package:playx/playx.dart' hide ResultFuture;
 
-typedef ResultFuture<T> = Future<NetworkResult<T>>;
-typedef ResultVoid = Future<NetworkResult<void>>;
+export 'package:flutter_boilerplate/core/network/src/result_types.dart';
 
-/// Agency-style wrapper for Playx data sources that already return [NetworkResult].
+/// Maps a Playx [NetworkResult] from the data source into a domain [NetworkResult].
 ///
 /// ```dart
 /// return execute(

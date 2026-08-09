@@ -1,6 +1,6 @@
 import 'package:flutter_boilerplate/app/products/data/data.dart';
-import 'package:flutter_boilerplate/core/base/base_repository.dart';
 import 'package:flutter_boilerplate/core/models/models.dart';
+import 'package:flutter_boilerplate/core/network/src/map_result.dart';
 
 class ProductsRepositoryImpl implements ProductsRepository {
   final ProductsRemoteDataSource _dataSource;

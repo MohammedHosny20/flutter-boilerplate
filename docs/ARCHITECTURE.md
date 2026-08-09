@@ -213,8 +213,9 @@ Defined in `lib/app/products/di/products_providers.dart`. App root: `ProviderSco
 
 | Piece | Path | Role |
 |---|---|---|
-| `ResultFuture` / `execute` | `lib/core/base/base_repository.dart` | Repo helper over Playx `NetworkResult` |
-| Use case bases | `lib/core/base/base_usecase.dart` | `UseCaseWithParams` / `UseCaseWithoutParams` |
+| `ResultFuture` / `ResultVoid` | `lib/core/network/src/result_types.dart` | Typedefs over Playx `NetworkResult` |
+| `execute` | `lib/core/network/src/map_result.dart` | Maps data-source `NetworkResult` → domain |
+| Use case bases | `lib/core/network/src/use_case.dart` | `UseCaseWithParams` / `UseCaseWithoutParams` |
 | `BasePagedNotifier` | `lib/core/pagination/` | Infinite list + cancel + seq |
 | `ResponsivePagedSliverView` | `lib/core/ui/widgets/pagination/` | Paged sliver UI |
 | Connection banner | `lib/core/connection/` + `ConnectionStatusWidget` | Online/offline `MaterialBanner` |
@@ -263,5 +264,5 @@ Justification:
 - Less ceremony than Bloc for typical CRUD/catalog screens (Bloc remains valid for complex event-driven domains).
 - Fits Playx (Dio / `PlayxNetworkClient` / GoRouter) without fighting the stack.
 - Enables gradual migration with proven coexistence.
-- Reusable cores: `base_repository` (`execute` / `ResultFuture`), `base_usecase`, `BasePagedNotifier`, connection status.
+- Reusable cores: `result_types`, `map_result` (`execute`), `use_case`, `BasePagedNotifier`, connection status.
 - Clear feature layout: `di` + `data` + `domain` + `presentation` with layer barrels.

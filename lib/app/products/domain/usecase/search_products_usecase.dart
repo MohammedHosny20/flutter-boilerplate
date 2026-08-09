@@ -1,6 +1,6 @@
 import 'package:flutter_boilerplate/app/products/domain/domain.dart';
-import 'package:flutter_boilerplate/core/base/base_usecase.dart';
 import 'package:flutter_boilerplate/core/models/models.dart';
+import 'package:flutter_boilerplate/core/network/src/use_case.dart';
 
 class SearchProductsUseCase
     extends UseCaseWithParams<DataWrapper<List<Product>>, ProductsParams> {
